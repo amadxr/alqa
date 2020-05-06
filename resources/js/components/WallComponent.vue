@@ -1,6 +1,6 @@
 <template>
-    <div v-on:mousemove="getMousePosition" class="vh-100 d-flex justify-content-center align-items-center">
-        <h1>ALQA</h1>                          
+    <div v-on:mousemove="getMousePosition" class="d-flex justify-content-center align-items-center">
+        <h2>Este es el centro</h2>         
     </div>
 </template>
 
