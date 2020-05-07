@@ -1,6 +1,6 @@
 <template>
     <div v-on:mousemove="handleMouseMovement" class="d-flex justify-content-center align-items-center">
-        <h2>Este es el centro</h2>         
+        <h2>ALQA</h2>         
     </div>
 </template>
 
@@ -64,7 +64,6 @@
                 );
                 this.maxScrollX = ( documentWidth - viewportWidth );
                 this.maxScrollY = ( documentHeight - viewportHeight );
-                console.log('esta en borde');
                 
                 // Get the current scroll position of the document.
                 this.currentScrollPosition.x = window.pageXOffset;
@@ -88,25 +87,21 @@
 				// gets the viewport edge. As such, we'll calculate the percentage that
 				// the user has made it "through the edge" when calculating the delta.
 				// Then, that use that percentage to back-off from the "max" step value.
-				var maxStep = 50;
+				var maxStep = 10;
  
 				// Should we scroll left?
 				if ( this.isInLeftEdge && canScrollLeft ) {
-					var intensity = ((this.edgeLeft - this.mousePosition.x) / this.edgeSize);
-					nextScrollX = (nextScrollX - (maxStep * intensity));
+					nextScrollX = (nextScrollX - maxStep);
 				// Should we scroll right?
 				} else if (this.isInRightEdge && canScrollRight) {
-					var intensity = ((this.mousePosition.x - this.edgeRight) / this.edgeSize);
-					nextScrollX = (nextScrollX + (maxStep * intensity));
+					nextScrollX = (nextScrollX + maxStep);
 				}
 				// Should we scroll up?
 				if (this.isInTopEdge && canScrollUp) {
-					var intensity = ((this.edgeTop - this.mousePosition.y) / this.edgeSize);
-					nextScrollY = (nextScrollY - (maxStep * intensity));
+					nextScrollY = (nextScrollY - maxStep);
 				// Should we scroll down?
 				} else if (this.isInBottomEdge && canScrollDown) {
-					var intensity = ((this.mousePosition.y - this.edgeBottom) / this.edgeSize);
-					nextScrollY = (nextScrollY + (maxStep * intensity));
+					nextScrollY = (nextScrollY + maxStep);
 				}
  
 				// Sanitize invalid maximums. An invalid scroll offset won't break the

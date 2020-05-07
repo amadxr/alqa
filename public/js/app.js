@@ -1918,8 +1918,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       wallStyle: {
-        height: '150%',
-        width: '150%'
+        height: '200%',
+        width: '200%'
       }
     };
   }
@@ -1988,8 +1988,7 @@ __webpack_require__.r(__webpack_exports__);
       var documentWidth = Math.max(document.body.scrollWidth, document.body.offsetWidth, document.body.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth);
       var documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.body.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, document.documentElement.clientHeight);
       this.maxScrollX = documentWidth - viewportWidth;
-      this.maxScrollY = documentHeight - viewportHeight;
-      console.log('esta en borde'); // Get the current scroll position of the document.
+      this.maxScrollY = documentHeight - viewportHeight; // Get the current scroll position of the document.
 
       this.currentScrollPosition.x = window.pageXOffset;
       this.currentScrollPosition.y = window.pageYOffset; // Determine if the window can be scrolled in any particular direction.
@@ -2009,23 +2008,19 @@ __webpack_require__.r(__webpack_exports__);
       // the user has made it "through the edge" when calculating the delta.
       // Then, that use that percentage to back-off from the "max" step value.
 
-      var maxStep = 50; // Should we scroll left?
+      var maxStep = 10; // Should we scroll left?
 
       if (this.isInLeftEdge && canScrollLeft) {
-        var intensity = (this.edgeLeft - this.mousePosition.x) / this.edgeSize;
-        nextScrollX = nextScrollX - maxStep * intensity; // Should we scroll right?
+        nextScrollX = nextScrollX - maxStep; // Should we scroll right?
       } else if (this.isInRightEdge && canScrollRight) {
-        var intensity = (this.mousePosition.x - this.edgeRight) / this.edgeSize;
-        nextScrollX = nextScrollX + maxStep * intensity;
+        nextScrollX = nextScrollX + maxStep;
       } // Should we scroll up?
 
 
       if (this.isInTopEdge && canScrollUp) {
-        var intensity = (this.edgeTop - this.mousePosition.y) / this.edgeSize;
-        nextScrollY = nextScrollY - maxStep * intensity; // Should we scroll down?
+        nextScrollY = nextScrollY - maxStep; // Should we scroll down?
       } else if (this.isInBottomEdge && canScrollDown) {
-        var intensity = (this.mousePosition.y - this.edgeBottom) / this.edgeSize;
-        nextScrollY = nextScrollY + maxStep * intensity;
+        nextScrollY = nextScrollY + maxStep;
       } // Sanitize invalid maximums. An invalid scroll offset won't break the
       // subsequent .scrollTo() call; however, it will make it harder to
       // determine if the .scrollTo() method should have been called in the
@@ -37723,7 +37718,7 @@ var render = function() {
       staticClass: "d-flex justify-content-center align-items-center",
       on: { mousemove: _vm.handleMouseMovement }
     },
-    [_c("h2", [_vm._v("Este es el centro")])]
+    [_c("h2", [_vm._v("ALQA")])]
   )
 }
 var staticRenderFns = []
