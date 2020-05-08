@@ -1920,7 +1920,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    this.initiateViewportData();
+    this.getMeasurements();
   },
   data: function data() {
     return {
@@ -1928,14 +1928,18 @@ __webpack_require__.r(__webpack_exports__);
         height: '130%',
         width: '110%'
       },
-      viewportWidth: 0,
-      viewportHeight: 0
+      maxScrollX: 0,
+      maxScrollY: 0
     };
   },
   methods: {
-    initiateViewportData: function initiateViewportData() {
-      this.viewportWidth = document.documentElement.clientWidth;
-      this.viewportHeight = document.documentElement.clientHeight;
+    getMeasurements: function getMeasurements() {
+      var viewportWidth = document.documentElement.clientWidth;
+      var viewportHeight = document.documentElement.clientHeight;
+      var documentWidth = Math.max(document.body.scrollWidth, document.body.offsetWidth, document.body.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth);
+      var documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.body.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, document.documentElement.clientHeight);
+      this.maxScrollX = documentWidth - viewportWidth;
+      this.maxScrollY = documentHeight - viewportHeight;
     }
   }
 });
@@ -1959,11 +1963,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    viewportWidth: {
+    maxScrollX: {
       type: Number,
       required: true
     },
-    viewportHeight: {
+    maxScrollY: {
       type: Number,
       required: true
     }
@@ -1981,23 +1985,18 @@ __webpack_require__.r(__webpack_exports__);
       currentMousePosition: {
         x: 0,
         y: 0
-      },
-      maxScrollX: 0,
-      maxScrollY: 0
+      }
     };
   },
   methods: {
     handleMouseMovement: function handleMouseMovement(event) {
+      // Verify in what direction the window should move.
       this.currentMousePosition.x = event.clientX;
       this.currentMousePosition.y = event.clientY;
       var shouldScrollLeft = this.currentMousePosition.x < this.previousMousePosition.x;
       var shouldScrollRight = this.currentMousePosition.x > this.previousMousePosition.x;
       var shouldScrollUp = this.currentMousePosition.y < this.previousMousePosition.y;
-      var shouldScrollDown = this.currentMousePosition.y > this.previousMousePosition.y;
-      var documentWidth = Math.max(document.body.scrollWidth, document.body.offsetWidth, document.body.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth);
-      var documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.body.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, document.documentElement.clientHeight);
-      this.maxScrollX = documentWidth - this.viewportWidth;
-      this.maxScrollY = documentHeight - this.viewportHeight; // Get the current scroll position of the document.
+      var shouldScrollDown = this.currentMousePosition.y > this.previousMousePosition.y; // Get the current scroll position of the document.
 
       this.currentScrollPosition.x = window.pageXOffset;
       this.currentScrollPosition.y = window.pageYOffset; // Determine if the window can be scrolled in any particular direction.
@@ -2005,18 +2004,10 @@ __webpack_require__.r(__webpack_exports__);
       var canScrollUp = this.currentScrollPosition.y > 0;
       var canScrollDown = this.currentScrollPosition.y < this.maxScrollY;
       var canScrollLeft = this.currentScrollPosition.x > 0;
-      var canScrollRight = this.currentScrollPosition.x < this.maxScrollX; // Since we can potentially scroll in two directions at the same time,
-      // let's keep track of the next scroll, starting with the current scroll.
-      // Each of these values can then be adjusted independently in the logic
-      // below.
+      var canScrollRight = this.currentScrollPosition.x < this.maxScrollX; // Let's figure out the next scroll coordinates
 
       var nextScrollX = this.currentScrollPosition.x;
-      var nextScrollY = this.currentScrollPosition.y; // As we examine the mouse position within the edge, we want to make the
-      // incremental scroll changes more "intense" the closer that the user
-      // gets the viewport edge. As such, we'll calculate the percentage that
-      // the user has made it "through the edge" when calculating the delta.
-      // Then, that use that percentage to back-off from the "max" step value.
-
+      var nextScrollY = this.currentScrollPosition.y;
       var maxStep = 3; // Should we scroll left?
 
       if (shouldScrollLeft && canScrollLeft) {
@@ -2030,16 +2021,13 @@ __webpack_require__.r(__webpack_exports__);
         nextScrollY = nextScrollY - maxStep; // Should we scroll down?
       } else if (shouldScrollDown && canScrollDown) {
         nextScrollY = nextScrollY + maxStep;
-      } // Sanitize invalid maximums. An invalid scroll offset won't break the
-      // subsequent .scrollTo() call; however, it will make it harder to
-      // determine if the .scrollTo() method should have been called in the
-      // first place.
-
+      }
 
       nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
-      nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
+      nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY)); // Save the current mouse position for the next time
+
       this.previousMousePosition.x = this.currentMousePosition.x;
-      this.previousMousePosition.y = this.currentMousePosition.y;
+      this.previousMousePosition.y = this.currentMousePosition.y; // Move window if there's space to move
 
       if (nextScrollX !== this.currentScrollPosition.x || nextScrollY !== this.currentScrollPosition.y) {
         window.scrollTo(nextScrollX, nextScrollY);
@@ -37701,8 +37689,8 @@ var render = function() {
       _c("wall-component", {
         style: _vm.wallStyle,
         attrs: {
-          "viewport-width": this.viewportWidth,
-          "viewport-height": this.viewportHeight
+          "max-scroll-x": this.maxScrollX,
+          "max-scroll-y": this.maxScrollY
         }
       })
     ],

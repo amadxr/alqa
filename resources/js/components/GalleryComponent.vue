@@ -1,8 +1,8 @@
 <template>
     <div class="vh-100">
         <wall-component
-            v-bind:viewport-width="this.viewportWidth"
-            v-bind:viewport-height="this.viewportHeight"
+            v-bind:max-scroll-x="this.maxScrollX"
+            v-bind:max-scroll-y="this.maxScrollY"
             :style="wallStyle"
         /> 
     </div>
@@ -11,7 +11,7 @@
 <script>
     export default {
         mounted () {
-            this.initiateViewportData()
+            this.getMeasurements()
         },
         data () {
             return {
@@ -19,14 +19,35 @@
                     height: '130%',
                     width: '110%'
                 },
-                viewportWidth: 0,
-                viewportHeight: 0
+                maxScrollX: 0,
+                maxScrollY: 0
             };
         },
         methods: {
-            initiateViewportData () {
-                this.viewportWidth = document.documentElement.clientWidth;
-                this.viewportHeight = document.documentElement.clientHeight;
+            getMeasurements () {
+                var viewportWidth = document.documentElement.clientWidth;
+                var viewportHeight = document.documentElement.clientHeight;
+
+                var documentWidth = Math.max(
+                    document.body.scrollWidth,
+                    document.body.offsetWidth,
+                    document.body.clientWidth,
+                    document.documentElement.scrollWidth,
+                    document.documentElement.offsetWidth,
+                    document.documentElement.clientWidth
+                );
+
+                var documentHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.body.offsetHeight,
+                    document.body.clientHeight,
+                    document.documentElement.scrollHeight,
+                    document.documentElement.offsetHeight,
+                    document.documentElement.clientHeight
+                );
+
+                this.maxScrollX = (documentWidth - viewportWidth);
+                this.maxScrollY = (documentHeight - viewportHeight);
             }
         }
     }
