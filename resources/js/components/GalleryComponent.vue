@@ -1,19 +1,33 @@
 <template>
     <div class="vh-100">
-        <wall-component :style="wallStyle"/> 
+        <wall-component
+            v-bind:viewport-width="this.viewportWidth"
+            v-bind:viewport-height="this.viewportHeight"
+            :style="wallStyle"
+        /> 
     </div>
 </template>
 
 <script>
     export default {
-        data() {
+        mounted () {
+            this.initiateViewportData()
+        },
+        data () {
             return {
                 wallStyle: {
-                    height: '200%',
-                    width: '200%'
-                }           
+                    height: '130%',
+                    width: '110%'
+                },
+                viewportWidth: 0,
+                viewportHeight: 0
             };
         },
-      
+        methods: {
+            initiateViewportData () {
+                this.viewportWidth = document.documentElement.clientWidth;
+                this.viewportHeight = document.documentElement.clientHeight;
+            }
+        }
     }
 </script>

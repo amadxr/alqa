@@ -1914,14 +1914,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    this.initiateViewportData();
+  },
   data: function data() {
     return {
       wallStyle: {
-        height: '200%',
-        width: '200%'
-      }
+        height: '130%',
+        width: '110%'
+      },
+      viewportWidth: 0,
+      viewportHeight: 0
     };
+  },
+  methods: {
+    initiateViewportData: function initiateViewportData() {
+      this.viewportWidth = document.documentElement.clientWidth;
+      this.viewportHeight = document.documentElement.clientHeight;
+    }
   }
 });
 
@@ -1943,52 +1958,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    viewportWidth: {
+      type: Number,
+      required: true
+    },
+    viewportHeight: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
-      edgeSize: 200,
-      edgeTop: 0,
-      edgeLeft: 0,
-      edgeBottom: 0,
-      edgeRight: 0,
       currentScrollPosition: {
         x: 0,
         y: 0
       },
-      mousePosition: {
+      previousMousePosition: {
         x: 0,
         y: 0
       },
-      isInLeftEdge: false,
-      isInRightEdge: false,
-      isInTopEdge: false,
-      isInBottomEdge: false,
+      currentMousePosition: {
+        x: 0,
+        y: 0
+      },
       maxScrollX: 0,
       maxScrollY: 0
     };
   },
   methods: {
     handleMouseMovement: function handleMouseMovement(event) {
-      this.mousePosition.x = event.clientX;
-      this.mousePosition.y = event.clientY;
-      var viewportWidth = document.documentElement.clientWidth;
-      var viewportHeight = document.documentElement.clientHeight;
-      this.edgeTop = this.edgeSize;
-      this.edgeLeft = this.edgeSize;
-      this.edgeBottom = viewportHeight - this.edgeSize;
-      this.edgeRight = viewportWidth - this.edgeSize;
-      this.isInLeftEdge = this.mousePosition.x < this.edgeLeft;
-      this.isInRightEdge = this.mousePosition.x > this.edgeRight;
-      this.isInTopEdge = this.mousePosition.y < this.edgeTop;
-      this.isInBottomEdge = this.mousePosition.y > this.edgeBottom;
-
-      if (!(this.isInLeftEdge || this.isInRightEdge || this.isInTopEdge || this.isInBottomEdge)) {
-        return;
-      }
-
+      this.currentMousePosition.x = event.clientX;
+      this.currentMousePosition.y = event.clientY;
+      var shouldScrollLeft = this.currentMousePosition.x < this.previousMousePosition.x;
+      var shouldScrollRight = this.currentMousePosition.x > this.previousMousePosition.x;
+      var shouldScrollUp = this.currentMousePosition.y < this.previousMousePosition.y;
+      var shouldScrollDown = this.currentMousePosition.y > this.previousMousePosition.y;
       var documentWidth = Math.max(document.body.scrollWidth, document.body.offsetWidth, document.body.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, document.documentElement.clientWidth);
       var documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.body.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, document.documentElement.clientHeight);
-      this.maxScrollX = documentWidth - viewportWidth;
-      this.maxScrollY = documentHeight - viewportHeight; // Get the current scroll position of the document.
+      this.maxScrollX = documentWidth - this.viewportWidth;
+      this.maxScrollY = documentHeight - this.viewportHeight; // Get the current scroll position of the document.
 
       this.currentScrollPosition.x = window.pageXOffset;
       this.currentScrollPosition.y = window.pageYOffset; // Determine if the window can be scrolled in any particular direction.
@@ -2008,18 +2017,18 @@ __webpack_require__.r(__webpack_exports__);
       // the user has made it "through the edge" when calculating the delta.
       // Then, that use that percentage to back-off from the "max" step value.
 
-      var maxStep = 10; // Should we scroll left?
+      var maxStep = 3; // Should we scroll left?
 
-      if (this.isInLeftEdge && canScrollLeft) {
+      if (shouldScrollLeft && canScrollLeft) {
         nextScrollX = nextScrollX - maxStep; // Should we scroll right?
-      } else if (this.isInRightEdge && canScrollRight) {
+      } else if (shouldScrollRight && canScrollRight) {
         nextScrollX = nextScrollX + maxStep;
       } // Should we scroll up?
 
 
-      if (this.isInTopEdge && canScrollUp) {
+      if (shouldScrollUp && canScrollUp) {
         nextScrollY = nextScrollY - maxStep; // Should we scroll down?
-      } else if (this.isInBottomEdge && canScrollDown) {
+      } else if (shouldScrollDown && canScrollDown) {
         nextScrollY = nextScrollY + maxStep;
       } // Sanitize invalid maximums. An invalid scroll offset won't break the
       // subsequent .scrollTo() call; however, it will make it harder to
@@ -2029,6 +2038,8 @@ __webpack_require__.r(__webpack_exports__);
 
       nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
       nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
+      this.previousMousePosition.x = this.currentMousePosition.x;
+      this.previousMousePosition.y = this.currentMousePosition.y;
 
       if (nextScrollX !== this.currentScrollPosition.x || nextScrollY !== this.currentScrollPosition.y) {
         window.scrollTo(nextScrollX, nextScrollY);
@@ -37686,7 +37697,15 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "vh-100" },
-    [_c("wall-component", { style: _vm.wallStyle })],
+    [
+      _c("wall-component", {
+        style: _vm.wallStyle,
+        attrs: {
+          "viewport-width": this.viewportWidth,
+          "viewport-height": this.viewportHeight
+        }
+      })
+    ],
     1
   )
 }
