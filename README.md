@@ -1,3 +1,8 @@
-## Alqa
+# Alqa
 
-More information coming soon.
+Gallery of andean expressions.
+
+## Requirements
+
+* Laravel
+* Vue.js
