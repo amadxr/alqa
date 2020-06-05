@@ -1,5 +1,8 @@
 <template>
-    <div v-on:mousemove="handleMouseMovement" class="d-flex justify-content-center align-items-center">
+    <div 
+        v-on:mousemove="handleMouseMovement" 
+        class="d-flex justify-content-center align-items-center" 
+        :style="{ backgroundImage: `url('${this.wallpaperUrl}')` }">
         <h2>ALQA</h2>         
     </div>
 </template>
@@ -7,6 +10,9 @@
 <script>
     export default {
         props: {
+            wallpaperUrl: {
+                type: String
+            },
             maxScrollX: {
                 type: Number,
                 required: true

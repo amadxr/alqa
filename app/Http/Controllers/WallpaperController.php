@@ -17,7 +17,8 @@ class WallpaperController extends Controller
         $path = Storage::putFileAs(
             'display', 
             $request->file('wallpaper'),
-            'wallpaper.jpg'
+            'wallpaper.jpg',
+            ['visibility' => 'public']
         );
 
         $wallpaper = Wallpaper::firstOrNew();
