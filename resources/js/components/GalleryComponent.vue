@@ -3,6 +3,7 @@
         <wall-component
             v-bind:max-scroll-x="this.maxScrollX"
             v-bind:max-scroll-y="this.maxScrollY"
+            v-bind:wallpaper-url="this.wallpaperUrl"
             :style="wallStyle"
         /> 
     </div>
@@ -10,6 +11,9 @@
 
 <script>
     export default {
+        created () {
+            this.fetchWallpaper();
+        },
         mounted () {
             this.getMeasurements()
         },
@@ -17,13 +21,21 @@
             return {
                 wallStyle: {
                     height: '130%',
-                    width: '110%'
+                    width: '110%',
                 },
+                wallpaperUrl: '',
                 maxScrollX: 0,
                 maxScrollY: 0
             };
         },
         methods: {
+            fetchWallpaper () {
+                axios.get(process.env.MIX_APP_URL + 'api/wallpaper')
+                    .then(({data}) => {
+                        this.wallpaperUrl = data.data.url;
+                    });
+            },
+
             getMeasurements () {
                 var viewportWidth = document.documentElement.clientWidth;
                 var viewportHeight = document.documentElement.clientHeight;
