@@ -14,7 +14,23 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="max-w-sm mx-auto py-8">
+                        <form action="/home" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="wallpaper" id="wallpaper">
+                            <button type="submit">Upload</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
