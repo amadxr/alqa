@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'wallpaper'], function () {
     Route::get('/', 'Api\WallpaperController@show');
+    Route::post('/', 'Api\WallpaperController@store');
 });

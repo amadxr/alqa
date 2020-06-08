@@ -22,6 +22,8 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('gallery-component', require('./components/GalleryComponent.vue').default);
 Vue.component('wall-component', require('./components/WallComponent.vue').default);
+Vue.component('wallpaper-form-component', require('./components/WallpaperFormComponent.vue').default);
+Vue.component('file-upload-component', require('./components/FileUploadComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

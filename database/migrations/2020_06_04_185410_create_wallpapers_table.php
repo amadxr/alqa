@@ -16,6 +16,7 @@ class CreateWallpapersTable extends Migration
         Schema::create('wallpapers', function (Blueprint $table) {
             $table->id();
             $table->string('url');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

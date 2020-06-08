@@ -22,6 +22,7 @@
                 wallStyle: {
                     height: '130%',
                     width: '110%',
+                    backgroundColor: '#E8E5D1',
                 },
                 wallpaperUrl: '',
                 maxScrollX: 0,

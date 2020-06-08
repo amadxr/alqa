@@ -25,11 +25,7 @@
                     @endif
 
                     <div class="max-w-sm mx-auto py-8">
-                        <form action="/home" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" name="wallpaper" id="wallpaper">
-                            <button type="submit">Upload</button>
-                        </form>
+                        <wallpaper-form-component/>
                     </div>
                 </div>
             </div>
