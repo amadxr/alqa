@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class StoreWallpaper extends FormRequest
 {
@@ -24,7 +26,15 @@ class StoreWallpaper extends FormRequest
     public function rules()
     {
         return [
-            'active' => 'required|boolean'
+            'file' => 'image',
+            'data.wallpaper.active' => 'required|boolean'
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'data' => json_decode($this->data, true),
+        ]);
     }
 }

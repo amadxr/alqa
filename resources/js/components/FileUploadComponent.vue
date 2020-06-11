@@ -2,7 +2,8 @@
     <div>
         <div class="custom-file">
             <input type="file" @change="handleFileInput" class="custom-file-input" id="customFile">
-            <label class="custom-file-label" for="customFile">Choose file</label>
+            <label v-if="value" class="custom-file-label" for="customFile"> {{ value.name }}</label>
+            <label v-else class="custom-file-label" for="customFile">Choose file</label>
         </div>
     </div>
 </template>
@@ -11,7 +12,7 @@
     export default {
         props: {
             value: {
-                type: Object
+                type: File
             }
         },
         methods: {

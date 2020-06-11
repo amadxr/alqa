@@ -16,6 +16,7 @@ class Wallpaper extends JsonResource
     {
         return [
             'url' => $this->url,
+            'active' => $this->active,
         ];
     }
 }

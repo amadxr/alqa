@@ -13,27 +13,66 @@ class WallpaperController extends Controller
 {
     public function store(StoreWallpaper $request)
     {
-        $path = Storage::putFileAs(
-            'display', 
-            $request->file('wallpaper'),
-            'wallpaper.jpg',
-            ['visibility' => 'public']
-        );
-
         $wallpaper = Wallpaper::firstOrNew();
-        $wallpaper->url = $path;
-        $wallpaper->save();
+        $wallpaper->active = $request->data['wallpaper']['active'];
+        $success = 'Wallpaper updated successfully!';
 
+        if (!is_null($request->file)) {
+            $path = Storage::putFileAs(
+                'display', 
+                $request->file,
+                'wallpaper.jpg',
+                'public'
+            );
+
+            if (is_null($wallpaper->url)) {
+                $success = 'Wallpaper created successfully!';
+            }
+
+            $wallpaper->url = $path;
+        }
+
+        if (is_null($wallpaper->url)) {
+            return response()->json([
+                'errors' => [
+                    'file' => [
+                        'The image file is required if a wallpaper has not been created yet.'
+                    ]
+                ],
+            ], 422);
+        }
+
+        $wallpaper->save();
         $wallpaper->url = Storage::url($wallpaper->url);
 
-        return new WallpaperResource($wallpaper);
+        return response()->json([
+            'data' => [
+                'wallpaper' => new WallpaperResource($wallpaper),
+            ],
+            'messages' => [
+                'success' => $success,
+            ]
+        ], 200);
     }
 
     public function show()
     {
         $wallpaper = Wallpaper::first();
-        $wallpaper->url = Storage::url($wallpaper->url);
 
-        return new WallpaperResource($wallpaper);
+        if (!empty($wallpaper)) {
+            $wallpaper->url = Storage::url($wallpaper->url);
+            $info = 'Wallpaper fetched successfully!';
+        } else {
+            $info = 'There are no wallpapers yet.';
+        }
+
+        return response()->json([
+            'data' => [
+                'wallpaper' => new WallpaperResource($wallpaper),
+            ],
+            'messages' => [
+                'info' => $info,
+            ]
+        ], 200);
     }
 }
