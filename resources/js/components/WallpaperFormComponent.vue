@@ -90,7 +90,8 @@
                 let wallpaper = response.data.data.wallpaper;
 
                 if (wallpaper !== null) {
-                    this.wallpaper = wallpaper;
+                    this.wallpaper.url = wallpaper.image.url;
+                    this.wallpaper.active = wallpaper.active;
                 }
             },
 
