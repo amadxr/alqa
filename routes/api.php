@@ -18,6 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'wallpaper'], function () {
+Route::group(['prefix' => 'wallpapers'], function () {
     Route::get('/', 'Api\WallpaperController@show');
+    Route::post('/', 'Api\WallpaperController@store');
+});
+
+Route::group(['prefix' => 'artworks'], function () {
+    Route::get('/', 'Api\ArtworkController@index');
 });

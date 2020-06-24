@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\Image as ImageResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
-class Wallpaper extends JsonResource
+class Image extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,9 @@ class Wallpaper extends JsonResource
     public function toArray($request)
     {
         return [
-            'active' => $this->active,
-            'image' => new ImageResource($this->whenLoaded('image')),
+            'url' => Storage::url($this->url),
+            'display' => $this->display,
+            'interactive' => $this->interactive,
         ];
     }
 }

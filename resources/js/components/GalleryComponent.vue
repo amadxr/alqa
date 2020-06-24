@@ -3,7 +3,7 @@
         <wall-component
             v-bind:max-scroll-x="this.maxScrollX"
             v-bind:max-scroll-y="this.maxScrollY"
-            v-bind:wallpaper-url="this.wallpaperUrl"
+            v-bind:wallpaper="this.wallpaper"
             :style="wallStyle"
         /> 
     </div>
@@ -20,19 +20,23 @@
         data () {
             return {
                 wallStyle: {
-                    height: '130%',
-                    width: '110%',
+                    height: '235%',
+                    width: '160%',
+                    backgroundColor: '#E8E5D1',
                 },
-                wallpaperUrl: '',
+                wallpaper: {
+                    'url': null,
+                    'active': false,
+                },
                 maxScrollX: 0,
                 maxScrollY: 0
             };
         },
         methods: {
             fetchWallpaper () {
-                axios.get(process.env.MIX_APP_URL + 'api/wallpaper')
-                    .then(({data}) => {
-                        this.wallpaperUrl = data.data.url;
+                axios.get(process.env.MIX_APP_URL + 'api/wallpapers')
+                    .then(response => {
+                        this.setWallpaper(response);
                     });
             },
 
@@ -60,7 +64,16 @@
 
                 this.maxScrollX = (documentWidth - viewportWidth);
                 this.maxScrollY = (documentHeight - viewportHeight);
-            }
+            },
+
+            setWallpaper (response) {
+                let wallpaper = response.data.data.wallpaper;
+
+                if (wallpaper !== null) {
+                    this.wallpaper.url = wallpaper.image.url;
+                    this.wallpaper.active = wallpaper.active;
+                }
+            },
         }
     }
 </script>

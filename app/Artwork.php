@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Wallpaper extends Model
+class Artwork extends Model
 {
     protected $guarded = [];
 
     protected $dates = ['created_at', 'updated_at'];
 
-    public function image()
+    public function images()
     {
-        return $this->morphOne('App\Image', 'imageable');
+        return $this->morphMany('App\Image', 'imageable');
     }
 }

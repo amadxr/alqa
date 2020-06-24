@@ -1,26 +1,49 @@
 <template>
     <div 
+        v-if="wallpaper.active"
         v-on:mousemove="handleMouseMovement" 
-        class="d-flex justify-content-center align-items-center" 
-        :style="{ backgroundImage: `url('${this.wallpaperUrl}')` }">
-        <h2>ALQA</h2>         
+        class="d-flex justify-content-center align-items-center"
+        :style="{ 
+            backgroundImage: `url('${this.wallpaper.url}')`,
+            backgroundPosition: `center`,
+            backgroundSize: `cover`,
+        }">
+        <img class="logo" src="https://alqa.s3.us-east-2.amazonaws.com/display/logo.png">
+    </div>
+    <div 
+        v-else
+        v-on:mousemove="handleMouseMovement" 
+        class="d-flex justify-content-center align-items-center">
+        <img class="logo" src="https://alqa.s3.us-east-2.amazonaws.com/display/logo.png">
     </div>
 </template>
+
+<style>
+    .logo {
+        position: relative;
+        top: -235px;
+        left: 5px;
+        width: 380px;
+    }
+</style>
 
 <script>
     export default {
         props: {
-            wallpaperUrl: {
-                type: String
-            },
             maxScrollX: {
                 type: Number,
-                required: true
+                required: true,
             },
             maxScrollY: {
                 type: Number,
-                required: true
-            }
+                required: true,
+            },
+            wallpaper: {
+                type: Object,
+            },
+        },
+        created () {
+            this.prepareSite();
         },
         data () {
             return {
@@ -39,6 +62,13 @@
             };
         },
         methods: {
+            prepareSite () {
+                console.log(this.maxScrollY);
+                this.currentScrollPosition.x = this.maxScrollX / 2;
+                this.currentScrollPosition.y = this.maxScrollY;
+                window.scrollTo(this.currentScrollPosition.x, this.currentScrollPosition.y);
+            },
+
             handleMouseMovement (event) {
                 // Verify in what direction the window should move.
                 this.currentMousePosition.x = event.clientX;
@@ -63,7 +93,7 @@
 				var nextScrollX = this.currentScrollPosition.x;
                 var nextScrollY = this.currentScrollPosition.y;
                 
-				var maxStep = 3;
+				var maxStep = 10;
  
 				// Should we scroll left?
 				if (shouldScrollLeft && canScrollLeft) {

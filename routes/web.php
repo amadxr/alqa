@@ -19,5 +19,8 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/home', 'WallpaperController@store');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::view('/gallery', 'gallery-settings')->name('gallery-settings');
+    Route::view('/artwork', 'artwork-index')->name('artwork-index');
+});
