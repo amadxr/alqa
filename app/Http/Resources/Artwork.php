@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Image as ImageResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
-class Image extends JsonResource
+class Artwork extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,11 @@ class Image extends JsonResource
     public function toArray($request)
     {
         return [
-            'url' => Storage::url($this->url),
-            'display' => $this->display,
-            'interactive' => $this->interactive,
+            'name' => $this->name,
+            'origin' => $this->origin,
+            'description' => $this->description,
+            'sku' => $this->sku,
+            'images' => ImageResource::collection($this->images),
         ];
     }
 }

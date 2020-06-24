@@ -26,7 +26,7 @@ class StoreWallpaper extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'image',
+            'file' => 'image|file|max:5120',
             'data.wallpaper.active' => 'required|boolean'
         ];
     }
