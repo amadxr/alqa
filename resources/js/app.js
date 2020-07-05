@@ -25,6 +25,7 @@ Vue.component('wall-component', require('./components/WallComponent.vue').defaul
 Vue.component('wallpaper-form-component', require('./components/WallpaperFormComponent.vue').default);
 Vue.component('file-upload-component', require('./components/FileUploadComponent.vue').default);
 Vue.component('artwork-list-component', require('./components/ArtworkListComponent.vue').default);
+Vue.component('artwork-form-component', require('./components/ArtworkFormComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

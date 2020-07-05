@@ -18,7 +18,11 @@ class CreateArtworksTable extends Migration
             $table->string('name');
             $table->string('origin');
             $table->longText('description');
-            $table->string('sku');
+            $table->unsignedDecimal('width', 6, 2);
+            $table->unsignedDecimal('length', 6, 2);
+            $table->unsignedDecimal('depth', 6, 2)->nullable();
+            $table->string('sku')->unique();
+            $table->unsignedDecimal('price', 8, 2);
             $table->timestamps();
         });
     }

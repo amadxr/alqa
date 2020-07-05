@@ -25,4 +25,6 @@ Route::group(['prefix' => 'wallpapers'], function () {
 
 Route::group(['prefix' => 'artworks'], function () {
     Route::get('/', 'Api\ArtworkController@index');
+    Route::get('/{id}', 'Api\ArtworkController@show');
+    Route::post('/', 'Api\ArtworkController@store');
 });
