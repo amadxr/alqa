@@ -16,10 +16,15 @@ class Artwork extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'origin' => $this->origin,
             'description' => $this->description,
+            'width' => $this->width,
+            'length' => $this->length,
+            'depth' => $this->depth,
             'sku' => $this->sku,
+            'price' => $this->price,
             'images' => ImageResource::collection($this->images),
         ];
     }
