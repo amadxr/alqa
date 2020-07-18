@@ -45,7 +45,7 @@
                     <span v-if="errors.data.artwork.depth" class="help-block text-danger">{{ errors.data.artwork.depth[0] }}</span>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="inputSKU" placeholder="SKU" v-model="artwork.sku">
+                    <input type="text" class="form-control" id="inputSKU" placeholder="SKU" v-model="artwork.sku" :readonly="art">
                     <span v-if="errors.data.artwork.sku" class="help-block text-danger">{{ errors.data.artwork.sku[0] }}</span>
                 </div>
                 <div class="form-group">
@@ -137,17 +137,33 @@
                     formData.append('file', this.file);
                 }
 
-                axios
-                    .post(process.env.MIX_APP_URL + 'api/artworks', formData, config)
-                    .then(response => {
-                        this.setMessages(response);
-                        this.setArtwork(response);
-                        this.resetForm();
-                    })
-                    .catch(error => {
-                        this.setErrors(error.response);
-                        this.resetForm();
-                    });
+                if (this.art) {
+                    formData.append('_method', 'PUT');
+
+                    axios
+                        .post(process.env.MIX_APP_URL + 'api/artworks', formData, config)
+                        .then(response => {
+                            this.setMessages(response);
+                            this.setArtwork(response);
+                            this.resetForm();
+                        })
+                        .catch(error => {
+                            this.setErrors(error.response);
+                            this.resetForm();
+                        });
+                } else {
+                    axios
+                        .post(process.env.MIX_APP_URL + 'api/artworks', formData, config)
+                        .then(response => {
+                            this.setMessages(response);
+                            this.setArtwork(response);
+                            this.resetForm();
+                        })
+                        .catch(error => {
+                            this.setErrors(error.response);
+                            this.resetForm();
+                        });
+                }
             },
 
             setArtwork (response) {

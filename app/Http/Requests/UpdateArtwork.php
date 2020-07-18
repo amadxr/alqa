@@ -6,7 +6,7 @@ use App\Http\Requests\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class StoreArtwork extends FormRequest
+class UpdateArtwork extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,13 +26,13 @@ class StoreArtwork extends FormRequest
     public function rules()
     {
         return [
+            'data.artwork.id' => 'required|numeric',
             'data.artwork.name' => 'required|min:3',
             'data.artwork.origin' => 'required|min:3',
             'data.artwork.description' => 'required|min:3',
             'data.artwork.width' => 'required|numeric',
             'data.artwork.length' => 'required|numeric',
             'data.artwork.depth' => 'nullable|numeric',
-            'data.artwork.sku' => 'required|min:3|unique:artworks,sku',
             'data.artwork.price' => 'required|numeric',
         ];
     }

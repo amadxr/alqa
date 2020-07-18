@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Artwork;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArtwork;
+use App\Http\Requests\UpdateArtwork;
 use App\Http\Resources\Artwork as ArtworkResource;
 use App\Image;
 use Illuminate\Http\Request;
@@ -69,24 +70,46 @@ class ArtworkController extends Controller
             'price' => $artworkData['price'],
         ];
 
-        if (!array_key_exists('id', $artworkData)) {
-            $artwork = Artwork::create($artworkArray);
-            $success = "Artwork successfully registered!";
-        } else {
-            $artwork = Artwork::find($artworkData['id']);
+        $artwork = Artwork::create($artworkArray);
+        $success = "Artwork successfully registered!";
 
-            if (is_null($artwork)) {
-                return response()->json([
-                    'errors' => [
-                        'id' => [
-                            'The artwork being updated does not exist in the database.'
-                        ]
-                    ],
-                ], 422);
-            } else {
-                $artwork->update($artworkArray);
-                $success = "Artwork successfully updated!";
-            }
+        return response()->json([
+            'data' => [
+                'artwork' => new ArtworkResource($artwork),
+            ],
+            'messages' => [
+                'success' => $success,
+            ]
+        ], 200);
+    }
+
+    public function update(UpdateArtwork $request)
+    {
+        $artworkData = $request->data['artwork'];
+
+        $artworkArray = [
+            'name' => $artworkData['name'],
+            'origin' => $artworkData['origin'],
+            'description' => $artworkData['description'],
+            'width' => $artworkData['width'],
+            'length' => $artworkData['length'],
+            'depth' => $artworkData['depth'],
+            'price' => $artworkData['price'],
+        ];
+
+        $artwork = Artwork::find($artworkData['id']);
+
+        if (is_null($artwork)) {
+            return response()->json([
+                'errors' => [
+                    'id' => [
+                        'The artwork being updated does not exist in the database.'
+                    ]
+                ],
+            ], 422);
+        } else {
+            $artwork->update($artworkArray);
+            $success = "Artwork successfully updated!";
         }
 
         return response()->json([
