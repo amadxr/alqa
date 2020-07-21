@@ -1,9 +1,11 @@
 <template>
     <div>
-        <div class="custom-file">
-            <input type="file" @change="handleFileInput" class="custom-file-input" id="customFile">
-            <label v-if="value" class="custom-file-label" for="customFile"> {{ value.name }}</label>
-            <label v-else class="custom-file-label" for="customFile">Choose file</label>
+        <div class="form-group">
+            <div class="custom-file">
+                <input type="file" @change="handleFileInput" class="custom-file-input" id="customFile">
+                <label v-if="value" class="custom-file-label" for="customFile"> {{ value.url }}</label>
+                <label v-else class="custom-file-label" for="customFile">Choose file</label>
+            </div>
         </div>
     </div>
 </template>

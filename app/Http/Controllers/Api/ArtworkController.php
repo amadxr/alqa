@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateArtwork;
 use App\Http\Resources\Artwork as ArtworkResource;
 use App\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArtworkController extends Controller
 {
@@ -71,6 +72,22 @@ class ArtworkController extends Controller
         ];
 
         $artwork = Artwork::create($artworkArray);
+
+        foreach ($request->files->get('files') as $key => $value) {
+            $path = Storage::putFileAs(
+                'artworks/' . $artwork->sku,
+                $value,
+                $artwork->sku . '-' . $key . '.jpg',
+                'public'
+            );
+
+            $uploadedImage = new Image;
+            $uploadedImage->display = 'flyer';
+            $uploadedImage->url = $path;
+            $uploadedImage->imageable()->associate($artwork);
+            $uploadedImage->save();
+        }
+
         $success = "Artwork successfully registered!";
 
         return response()->json([
@@ -116,6 +133,30 @@ class ArtworkController extends Controller
             'data' => [
                 'artwork' => new ArtworkResource($artwork),
             ],
+            'messages' => [
+                'success' => $success,
+            ]
+        ], 200);
+    }
+
+    public function delete($id)
+    {
+        $artwork = Artwork::find($id);
+
+        if (is_null($artwork)) {
+            return response()->json([
+                'errors' => [
+                    'id' => [
+                        'The artwork being deleted does not exist in the database.'
+                    ]
+                ],
+            ], 422);
+        } else {
+            $artwork->delete();
+            $success = "Artwork successfully deleted.";
+        }
+
+        return response()->json([
             'messages' => [
                 'success' => $success,
             ]

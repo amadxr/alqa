@@ -57,6 +57,16 @@
                     </div>
                     <span v-if="errors.data.artwork.price" class="help-block text-danger">{{ errors.data.artwork.price[0] }}</span>
                 </div>
+                <div class="form-group">
+                    <p>Image Section</p>
+                    <button type="button" class="btn btn-outline-success btn-sm" @click="addFile">Add image</button>
+                </div>
+                <div class="form-group">
+                    <file-upload-component
+                        v-for="(file, index) in files" :key="index"
+                        v-model="files[index]">
+                    </file-upload-component>
+                </div>
                 <button type="submit" class="btn btn-dark">Submit</button>
             </form>
         </div>
@@ -104,7 +114,7 @@
                     sku: null,
                     price: null,
                 },
-                file: null,
+                files: [],
             };
         },
         methods: {
@@ -116,6 +126,11 @@
                             this.setArtwork(response);
                         });
                 }
+            },
+
+            addFile () {
+                let newFile = null;
+                this.files.push(newFile);
             },
 
             onSubmit () {
@@ -133,9 +148,8 @@
 
                 formData.append('data', json);
 
-                if (this.file) {
-                    formData.append('file', this.file);
-                }
+                this.files.forEach((file, index) => 
+                    formData.append('files[' + index + ']', file));
 
                 if (this.art) {
                     formData.append('_method', 'PUT');
@@ -170,7 +184,15 @@
                 let artwork = response.data.data.artwork;
 
                 if (artwork !== null) {
-                    this.artwork = artwork;
+                    this.artwork.name = artwork.name;
+                    this.artwork.origin = artwork.origin;
+                    this.artwork.description = artwork.description;
+                    this.artwork.width = artwork.width;
+                    this.artwork.length = artwork.length;
+                    this.artwork.depth = artwork.depth;
+                    this.artwork.sku = artwork.sku;
+                    this.artwork.price = artwork.price;
+                    this.files = artwork.images;
                 }
             },
 

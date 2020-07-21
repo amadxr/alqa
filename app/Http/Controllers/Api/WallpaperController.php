@@ -22,7 +22,7 @@ class WallpaperController extends Controller
 
         if (!is_null($request->file)) {
             $path = Storage::putFileAs(
-                'display', 
+                'display',
                 $request->file,
                 'wallpaper.jpg',
                 'public'

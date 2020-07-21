@@ -17,7 +17,6 @@ class CreateImagesTable extends Migration
             $table->id();
             $table->string('url');
             $table->string('display');
-            $table->boolean('interactive')->default(false);
             $table->integer('imageable_id');
             $table->string('imageable_type');
             $table->timestamps();

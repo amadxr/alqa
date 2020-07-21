@@ -18,7 +18,6 @@ class Image extends JsonResource
         return [
             'url' => Storage::url($this->url),
             'display' => $this->display,
-            'interactive' => $this->interactive,
         ];
     }
 }
