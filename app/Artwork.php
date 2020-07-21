@@ -14,4 +14,13 @@ class Artwork extends Model
     {
         return $this->morphMany('App\Image', 'imageable');
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($user) {
+            $user->images()->each(function($image) {
+                $image->delete();
+            });
+        });
+    }
 }

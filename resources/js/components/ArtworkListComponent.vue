@@ -16,6 +16,7 @@
                     <th scope="col">Origin</th>
                     <th scope="col">Price</th>
                     <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,7 @@
                     <td>{{ artwork.origin }}</td>
                     <td>{{ artwork.price }}</td>
                     <td><button type="button" class="btn btn-sm btn-outline-light" v-on:click="redirectToUpdate(artwork.id)">Update</button></td>
+                    <td><button type="button" class="btn btn-sm btn-outline-danger" v-on:click="deleteArtwork(artwork.id)">Delete</button></td>
                 </tr>
             </tbody>
         </table>
@@ -72,6 +74,14 @@
             
             redirectToUpdate (id) {
                 window.location.href = "artwork/show/" + id;
+            },
+            
+            deleteArtwork (id) {
+                axios
+                    .delete(process.env.MIX_APP_URL + 'api/artworks/' + id)
+                    .then(() => {
+                        window.location.href = "artwork";
+                    });
             },
         }
     }

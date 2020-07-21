@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Image extends Model
 {
@@ -13,5 +14,12 @@ class Image extends Model
     public function imageable()
     {
         return $this->morphTo();
+    }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($image) {
+            Storage::delete($image->path);
+        });
     }
 }
