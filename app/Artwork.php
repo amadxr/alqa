@@ -14,4 +14,9 @@ class Artwork extends Model
     {
         return $this->morphMany('App\Image', 'imageable');
     }
+
+    public function imageArea()
+    {
+        return $this->hasOne('App\ImageArea');
+    }
 }
