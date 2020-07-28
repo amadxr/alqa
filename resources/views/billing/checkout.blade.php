@@ -22,6 +22,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($wishlistItems as $item)
+                        <tr>
+                            <td>{{ $item->name }}</td>
+                            <td>1</td>
+                            <td>$ {{ $item->price }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

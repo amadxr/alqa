@@ -15,12 +15,18 @@ class Artwork extends Model
         return $this->morphMany('App\Image', 'imageable');
     }
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
-        self::deleting(function($user) {
-            $user->images()->each(function($image) {
+        self::deleting(function ($user) {
+            $user->images()->each(function ($image) {
                 $image->delete();
             });
         });
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->price_in_cents / 100;
     }
 }
