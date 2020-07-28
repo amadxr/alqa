@@ -50,4 +50,20 @@
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
 
+<script>
+
+ Culqi.settings({
+    title: 'Alqa',
+    currency: 'USD',
+    description: 'Alqa Artowrks',
+    amount: {{ $wishlistItems->sum('price_in_cents') }}
+});
+
+$('#button__checkout').on('click', function (e) {
+    console.log('Hey')
+    Culqi.open();
+});
+
+</script>
+
 </html>
