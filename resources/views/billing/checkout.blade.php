@@ -8,6 +8,7 @@
     <title>Alqa Checkout</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
+    <script src="https://checkout.culqi.com/js/v3"></script>
 </head>
 
 <body style="overflow: hidden">
@@ -29,6 +30,19 @@
                             <td>$ {{ $item->price }}</td>
                         </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="2" class="text-right font-weight-bold">
+                            Total:
+                        </td>
+                        <td>
+                            $ {{ $wishlistItems->sum('price') }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <button id="button__checkout" class="btn btn-primary"> Pagar</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
