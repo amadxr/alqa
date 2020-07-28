@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/checkout', 'CheckoutController@index');
+
 Auth::routes(['register' => false]);
 
 Route::middleware(['auth'])->group(function () {
