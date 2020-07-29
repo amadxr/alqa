@@ -42,6 +42,9 @@ class CheckoutController extends Controller
                 ]
             );
 
-        dd($response->json());
+        if ($response->successful()) {
+            return redirect('checkout/thanks');
+        }
+        // TODO: Add error handling
     }
 }
