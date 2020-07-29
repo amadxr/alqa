@@ -48,6 +48,7 @@
             <form method="POST" id="checkout__form" action="/checkout">
                 {{ csrf_field() }}
                 <input type="hidden" name="culqi_token" id="culqi_token" value="">
+                <input type="hidden" name="culqi_email" id="culqi_email" value="">
             </form>
         </div>
     </div>
