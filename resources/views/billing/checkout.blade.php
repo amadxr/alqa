@@ -40,11 +40,15 @@
                     </tr>
                     <tr>
                         <td colspan="3" class="text-center">
-                            <button id="button__checkout" class="btn btn-primary"> Pagar</button>
+                            <button id="button__checkout" class="btn btn-primary"> Process Payment </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <form method="POST" id="checkout__form" action="/checkout">
+                {{ csrf_field() }}
+                <input type="hidden" name="culqi_token" id="culqi_token" value="">
+            </form>
         </div>
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
@@ -55,12 +59,12 @@
  Culqi.settings({
     title: 'Alqa',
     currency: 'USD',
-    description: 'Alqa Artowrks',
+    description: 'Alqa Artworks',
     amount: {{ $wishlistItems->sum('price_in_cents') }}
 });
 
-$('#button__checkout').on('click', function (e) {
-    console.log('Hey')
+const cardButton = document.getElementById('button__checkout');
+cardButton.addEventListener('click', function (e) {
     Culqi.open();
 });
 

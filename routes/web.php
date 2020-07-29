@@ -18,6 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/checkout', 'CheckoutController@index');
+Route::post('/checkout', 'CheckoutController@store');
 
 Auth::routes(['register' => false]);
 
