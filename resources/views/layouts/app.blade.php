@@ -34,10 +34,13 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('gallery') }}">Gallery</a>
+                            <a class="nav-link" href="{{ url('artwork') }}">Artwork Manager</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('artwork') }}">Artwork</a>
+                            <a class="nav-link" href="{{ url('wall') }}">Wall Editor</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('settings') }}">Settings</a>
                         </li>
                     </ul>
 

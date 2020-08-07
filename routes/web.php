@@ -21,8 +21,9 @@ Auth::routes(['register' => false]);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::view('/gallery', 'gallery-settings')->name('gallery-settings');
+    Route::view('/settings', 'gallery-settings')->name('gallery-settings');
     Route::view('/artwork', 'artwork-index')->name('artwork-index');
+    Route::view('/wall', 'wall-editor')->name('wall-editor');
     Route::view('/artwork/create', 'artwork-create')->name('artwork-create');
     Route::get('/artwork/show/{id}', function ($id) {
         return view('artwork-show', ['artworkId' => $id]);
