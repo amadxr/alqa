@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Alqa</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ mix('css/tw.css') }}" rel="stylesheet" type="text/css">
 </head>
-<body style="overflow: hidden">
+<body>
     <div id="app">
         <gallery-component/>
     </div>
