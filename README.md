@@ -1,6 +1,6 @@
 # Alqa
 
-Galeria de expresiones andinas
+Galeria de expresiones andinas\
 *"gallery of andean expressions"*
 
 ## Requirements
