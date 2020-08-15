@@ -1,9 +1,12 @@
 <template>
-    <div 
-        @click="toggleModal" v-on:mousemove="handleMouseMovement"
-        class="h-screen w-screen">
-        <img class="absolute z-0" v-bind:src="wallpaper.url">
-        <modal-component v-if="showModal">
+    <div class="w-screen h-screen">
+        <div 
+            @click="toggleModal" v-on:mousemove="handleMouseMovement"
+            id="wallpaper"
+            class="w-w-wallpaper h-h-wallpaper flex items-center justify-center">
+            <img class="max-w-full max-h-full z-0" v-bind:src="wallpaper.url">
+        </div>
+        <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
                 <p>Disculpa la molestia,</p>
                 <p>momentáneamente estamos</p>
@@ -64,23 +67,8 @@
                 var viewportWidth = document.documentElement.clientWidth;
                 var viewportHeight = document.documentElement.clientHeight;
 
-                var documentWidth = Math.max(
-                    document.body.scrollWidth,
-                    document.body.offsetWidth,
-                    document.body.clientWidth,
-                    document.documentElement.scrollWidth,
-                    document.documentElement.offsetWidth,
-                    document.documentElement.clientWidth
-                );
-
-                var documentHeight = Math.max(
-                    document.body.scrollHeight,
-                    document.body.offsetHeight,
-                    document.body.clientHeight,
-                    document.documentElement.scrollHeight,
-                    document.documentElement.offsetHeight,
-                    document.documentElement.clientHeight
-                );
+                var documentWidth = document.getElementById('wallpaper').offsetWidth;
+                var documentHeight = document.getElementById('wallpaper').offsetHeight;
 
                 this.maxScrollX = (documentWidth - viewportWidth);
                 this.maxScrollY = (documentHeight - viewportHeight);
@@ -88,8 +76,11 @@
 
             prepareForInteraction () {
                 this.currentScrollPosition.x = this.maxScrollX / 2;
-                this.currentScrollPosition.y = this.maxScrollY;
-                window.scrollTo(this.currentScrollPosition.x, this.currentScrollPosition.y);
+                this.currentScrollPosition.y = this.maxScrollY / 2;
+
+                setTimeout(() => {
+                    window.scrollTo(this.currentScrollPosition.x, this.currentScrollPosition.y);
+                }, 5000);
             },
 
             setWallpaper (response) {
@@ -115,47 +106,47 @@
                 this.currentScrollPosition.x = window.pageXOffset;
                 this.currentScrollPosition.y = window.pageYOffset;
  
-				// Determine if the window can be scrolled in any particular direction.
-				var canScrollUp = (this.currentScrollPosition.y > 0);
-				var canScrollDown = (this.currentScrollPosition.y < this.maxScrollY);
-				var canScrollLeft = (this.currentScrollPosition.x > 0);
-				var canScrollRight = (this.currentScrollPosition.x < this.maxScrollX);
+                // Determine if the window can be scrolled in any particular direction.
+                var canScrollUp = (this.currentScrollPosition.y > 0);
+                var canScrollDown = (this.currentScrollPosition.y < this.maxScrollY);
+                var canScrollLeft = (this.currentScrollPosition.x > 0);
+                var canScrollRight = (this.currentScrollPosition.x < this.maxScrollX);
  
-				// Let's figure out the next scroll coordinates
-				var nextScrollX = this.currentScrollPosition.x;
+                // Let's figure out the next scroll coordinates
+                var nextScrollX = this.currentScrollPosition.x;
                 var nextScrollY = this.currentScrollPosition.y;
                 
-				var maxStep = 10;
+                var maxStep = 10;
  
-				// Should we scroll left?
-				if (shouldScrollLeft && canScrollLeft) {
-					nextScrollX = (nextScrollX - maxStep);
-				// Should we scroll right?
-				} else if (shouldScrollRight && canScrollRight) {
-					nextScrollX = (nextScrollX + maxStep);
-				}
-				// Should we scroll up?
-				if (shouldScrollUp && canScrollUp) {
-					nextScrollY = (nextScrollY - maxStep);
-				// Should we scroll down?
-				} else if (shouldScrollDown && canScrollDown) {
-					nextScrollY = (nextScrollY + maxStep);
-				}
+                // Should we scroll left?
+                if (shouldScrollLeft && canScrollLeft) {
+                    nextScrollX = (nextScrollX - maxStep);
+                // Should we scroll right?
+                } else if (shouldScrollRight && canScrollRight) {
+                    nextScrollX = (nextScrollX + maxStep);
+                }
+                // Should we scroll up?
+                if (shouldScrollUp && canScrollUp) {
+                    nextScrollY = (nextScrollY - maxStep);
+                // Should we scroll down?
+                } else if (shouldScrollDown && canScrollDown) {
+                    nextScrollY = (nextScrollY + maxStep);
+                }
  
- 				nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
+                nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
                 nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
 
-				// Save the current mouse position for the next time
+                // Save the current mouse position for the next time
                 this.previousMousePosition.x = this.currentMousePosition.x;
                 this.previousMousePosition.y = this.currentMousePosition.y;
  
                 // Move window if there's space to move
-				if (
-					(nextScrollX !== this.currentScrollPosition.x) ||
-					(nextScrollY !== this.currentScrollPosition.y)
-					) {
-					window.scrollTo(nextScrollX, nextScrollY);
-				}
+                if (
+                    (nextScrollX !== this.currentScrollPosition.x) ||
+                    (nextScrollY !== this.currentScrollPosition.y)
+                    ) {
+                    window.scrollTo(nextScrollX, nextScrollY);
+                }
             },
 
             toggleModal () {

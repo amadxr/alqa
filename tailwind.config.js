@@ -18,6 +18,10 @@ module.exports = {
       lineHeight: {
         '13': '3.25rem',
       },
+      spacing: {
+        'w-wallpaper': '180%',
+        'h-wallpaper': '265%',
+      },
     },
   },
   variants: {},
