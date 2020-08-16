@@ -16,3 +16,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes(['register' => false]);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::view('/gallery', 'gallery-settings')->name('gallery-settings');
+    Route::view('/artwork', 'artwork-index')->name('artwork-index');
+    Route::view('/artwork/create', 'artwork-create')->name('artwork-create');
+    Route::get('/artwork/show/{id}', function ($id) {
+        return view('artwork-show', ['artworkId' => $id]);
+    });
+});

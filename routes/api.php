@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'wallpapers'], function () {
+    Route::get('/', 'Api\WallpaperController@show');
+    Route::post('/', 'Api\WallpaperController@store');
+});
+
+Route::group(['prefix' => 'artworks'], function () {
+    Route::get('/', 'Api\ArtworkController@index');
+    Route::get('/{id}', 'Api\ArtworkController@show');
+    Route::post('/', 'Api\ArtworkController@store');
+    Route::put('/', 'Api\ArtworkController@update');
+    Route::delete('/{id}', 'Api\ArtworkController@delete');
+});

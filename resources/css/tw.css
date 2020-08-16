@@ -1,0 +1,16 @@
+@tailwind base;
+
+@font-face {
+    font-family: Sometimes Times;
+    src: url(/fonts/Sometimes_Times.ttf) format("ttf");
+}
+
+@font-face {
+    font-family: Sometimes Times;
+    src: url(/fonts/Sometimes_Times_Italic.ttf) format("ttf");
+    font-style: italic;
+}
+
+@tailwind components;
+
+@tailwind utilities;
