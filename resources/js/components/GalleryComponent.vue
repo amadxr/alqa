@@ -1,10 +1,10 @@
 <template>
-    <div class="w-screen h-screen">
-        <div 
+    <div>
+        <div
             @click="toggleModal" v-on:mousemove="handleMouseMovement"
             id="wallpaper"
-            class="w-w-wallpaper h-h-wallpaper flex items-center justify-center">
-            <img class="max-w-full max-h-full z-0" v-bind:src="wallpaper.url">
+            class="absolute w-screen h-screen bg-center bg-cover transform -translate-x-1/2 -translate-y-1/2 scale-160 top-1/2 left-1/2"
+            :style="backgroundStyles(wallpaper.url)">
         </div>
         <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
@@ -51,8 +51,8 @@
                 currentMousePosition: {
                     x: 0,
                     y: 0,
-                },   
-                showModal: true,
+                },
+                showModal: false,
             };
         },
         methods: {
@@ -61,6 +61,12 @@
                     .then(response => {
                         this.setWallpaper(response);
                     });
+            },
+
+            backgroundStyles (image) {
+                return {
+                    'background-image': `url(${image})`,
+                }
             },
 
             getMeasurements () {
@@ -77,10 +83,7 @@
             prepareForInteraction () {
                 this.currentScrollPosition.x = this.maxScrollX / 2;
                 this.currentScrollPosition.y = this.maxScrollY / 2;
-
-                setTimeout(() => {
-                    window.scrollTo(this.currentScrollPosition.x, this.currentScrollPosition.y);
-                }, 5000);
+                history.scrollRestoration = 'manual';
             },
 
             setWallpaper (response) {
@@ -96,28 +99,28 @@
                 // Verify in what direction the window should move.
                 this.currentMousePosition.x = event.clientX;
                 this.currentMousePosition.y = event.clientY;
-                
+
                 var shouldScrollLeft = (this.currentMousePosition.x < this.previousMousePosition.x);
                 var shouldScrollRight = (this.currentMousePosition.x > this.previousMousePosition.x);
                 var shouldScrollUp = (this.currentMousePosition.y < this.previousMousePosition.y);
                 var shouldScrollDown = (this.currentMousePosition.y > this.previousMousePosition.y);
-                
+
                 // Get the current scroll position of the document.
                 this.currentScrollPosition.x = window.pageXOffset;
                 this.currentScrollPosition.y = window.pageYOffset;
- 
+
                 // Determine if the window can be scrolled in any particular direction.
                 var canScrollUp = (this.currentScrollPosition.y > 0);
                 var canScrollDown = (this.currentScrollPosition.y < this.maxScrollY);
                 var canScrollLeft = (this.currentScrollPosition.x > 0);
                 var canScrollRight = (this.currentScrollPosition.x < this.maxScrollX);
- 
+
                 // Let's figure out the next scroll coordinates
                 var nextScrollX = this.currentScrollPosition.x;
                 var nextScrollY = this.currentScrollPosition.y;
-                
+
                 var maxStep = 10;
- 
+
                 // Should we scroll left?
                 if (shouldScrollLeft && canScrollLeft) {
                     nextScrollX = (nextScrollX - maxStep);
@@ -132,14 +135,14 @@
                 } else if (shouldScrollDown && canScrollDown) {
                     nextScrollY = (nextScrollY + maxStep);
                 }
- 
+
                 nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
                 nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
 
                 // Save the current mouse position for the next time
                 this.previousMousePosition.x = this.currentMousePosition.x;
                 this.previousMousePosition.y = this.currentMousePosition.y;
- 
+
                 // Move window if there's space to move
                 if (
                     (nextScrollX !== this.currentScrollPosition.x) ||

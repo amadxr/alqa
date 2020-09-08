@@ -2,12 +2,14 @@
 
 @font-face {
     font-family: Sometimes Times;
-    src: url(/fonts/Sometimes_Times.ttf) format("ttf");
+    src: url(/fonts/Sometimes_Times.ttf) format("ttf"),
+    url(/fonts/Sometimes_Times.woff) format("woff");
 }
 
 @font-face {
     font-family: Sometimes Times;
-    src: url(/fonts/Sometimes_Times_Italic.ttf) format("ttf");
+    src: url(/fonts/Sometimes_Times_Italic.ttf) format("ttf"),
+    url(/fonts/Sometimes_Times_Italic.woff) format("woff");
     font-style: italic;
 }
 
