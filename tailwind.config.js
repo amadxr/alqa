@@ -26,7 +26,7 @@ module.exports = {
         '1/2': '50%',
       },
       width: {
-        'card': '30.833333%',
+        'card': '590px',
       },
       height: {
         'card': '60%',
