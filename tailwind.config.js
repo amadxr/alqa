@@ -29,7 +29,7 @@ module.exports = {
         'card': '590px',
       },
       height: {
-        'card': '60%',
+        'card': '580px',
       },
       scale: {
         '160': '1.6',
