@@ -12,15 +12,27 @@ module.exports = {
         'alqa-special': 'Sometimes Times, serif',
       },
       fontSize: {
-        'first-p-size': '3.8rem',
-        'second-p-size': '1.6rem',
+        'first-p-size': '2.8rem',
+        'second-p-size': '1.2rem',
       },
       lineHeight: {
-        '13': '3.25rem',
+        '11': '2.75rem',
       },
       spacing: {
         'w-wallpaper': '180%',
-        'h-wallpaper': '265%',
+        'h-wallpaper': '258%',
+      },
+      inset: {
+        '1/2': '50%',
+      },
+      width: {
+        'card': '30.833333%',
+      },
+      height: {
+        'card': '60%',
+      },
+      scale: {
+        '160': '1.6',
       },
     },
   },

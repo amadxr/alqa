@@ -18,5 +18,11 @@ mix.js('resources/js/app.js', 'public/js')
         require('tailwindcss'),
         require('postcss-nested'),
     ])
+    .browserSync({
+        open: 'external',
+        host: 'alqa.dev',
+        proxy: 'alqa.dev',
+        files: ['resources/views/**/*.php', 'app/**/*.php', 'routes/**/*.php', 'public/js/*.js', 'public/css/*.css']
+    });
 
 mix.copyDirectory('resources/assets/fonts', 'public/fonts');
