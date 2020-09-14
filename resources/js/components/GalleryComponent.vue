@@ -6,6 +6,11 @@
             class="absolute w-screen h-screen bg-center bg-cover transform -translate-x-1/2 -translate-y-1/2 scale-160 top-1/2 left-1/2"
             :style="backgroundStyles(wallpaper.url)">
         </div>
+        <button
+            @click="toggleMenu"
+            class="fixed bottom-0 left-0 flex items-center justify-center w-16 h-16 mb-12 ml-12 bg-white rounded-full">
+            Menu
+        </button>
         <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
                 <p>Disculpa la molestia,</p>
@@ -53,6 +58,7 @@
                     y: 0,
                 },
                 showModal: false,
+                showMenu: false,
             };
         },
         methods: {
@@ -154,6 +160,10 @@
 
             toggleModal () {
                 this.showModal = !this.showModal;
+            },
+
+            toggleMenu () {
+                this.showMenu = !this.showMenu;
             },
         }
     }
