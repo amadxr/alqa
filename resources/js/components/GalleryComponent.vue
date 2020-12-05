@@ -8,8 +8,7 @@
         </div>
         <button
             @click="toggleMenu"
-            class="fixed bottom-0 left-0 flex items-center justify-center w-16 h-16 mb-12 ml-12 bg-white rounded-full">
-            Menu
+            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal">
         </button>
         <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
@@ -25,8 +24,36 @@
                 <p>y con gusto te atenderemos.</p>
             </div>
         </modal-component>
+        <transition name="slide">
+            <nav-component v-show="showMenu" @close="showMenu = false">
+                <div slot="list">
+                    <p>Nosotros</p>
+                    <p>Contacto</p>
+                    <p>Cuadernos de Cultura</p>
+                    <p>Lista de Deseos</p>
+                    <p>Agenda tu Visita</p>
+                </div>
+            </nav-component>
+        </transition>
     </div>
 </template>
+
+<style>
+    .slide-enter-active {
+      animation: menu-slide .5s;
+    }
+    .slide-leave-active {
+      animation: menu-slide .5s reverse;
+    }
+    @keyframes menu-slide {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+</style>
 
 <script>
     export default {

@@ -7,9 +7,14 @@ module.exports = {
         'wall-alt': '#9D9D9C',
         'first-p-color': '#3C3C3B',
         'second-p-color': '#1D1D1B',
+        'button-alt': '#515151',
+        'button-hover': '#EAE6DF',
+        'button-alt-hover': '#847777',
+        'alqa-charcoal': '#303030',
       },
       fontFamily: {
         'alqa-special': 'Sometimes Times, serif',
+        'alqa': 'Gotham, sans-serif',
       },
       fontSize: {
         'first-p-size': '2.8rem',
@@ -22,6 +27,9 @@ module.exports = {
         'w-wallpaper': '180%',
         'h-wallpaper': '258%',
       },
+      margin: {
+        '28': '7rem',
+      },
       inset: {
         '1/2': '50%',
       },
@@ -33,9 +41,17 @@ module.exports = {
       },
       scale: {
         '160': '1.6',
+        '400': '4',
+        '600': '6',
       },
     },
   },
-  variants: {},
+  variants: {
+    fontStyle: ['responsive', 'hover'],
+    translate: ['responsive', 'hover'],
+    scale: ['hover', 'group-hover'],
+    fontWeight: ['responsive', 'hover', 'group-hover'],
+    margin: ['hover', 'group-hover'],
+  },
   plugins: [],
 }
