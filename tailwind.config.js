@@ -35,9 +35,11 @@ module.exports = {
       },
       width: {
         'card': '590px',
+        'wall': '2500px',
       },
       height: {
         'card': '580px',
+        'wall': '2100px',
       },
       scale: {
         '160': '1.6',
