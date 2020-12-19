@@ -1,16 +1,17 @@
 <template>
     <div class="absolute flex items-center w-screen h-screen">
-        <div class="w-wall h-wall">
+        <div class="h-screen w-wall lg:h-wall">
             <div
                 @click="toggleModal" v-on:mousemove="handleMouseMovement"
                 id="wallpaper"
-                class="w-auto overflow-visible bg-center bg-cover translate-wall h-wall"
+                class="w-auto h-screen bg-center bg-cover translate-wall lg:h-wall"
                 :style="backgroundStyles(wallpaper.url)">
             </div>
         </div>
         <button
             @click="toggleMenu"
-            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal">
+            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal"
+            disabled>
         </button>
         <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
@@ -151,7 +152,7 @@
 
                 // Let's move the gallery wall.
                 var wall = document.getElementById("wallpaper");
-                wall.style.transform = "translate(" + distanceX + "px, " + distanceY + "px)";
+                //wall.style.transform = "translate(" + distanceX + "px, " + distanceY + "px)";
 
                 // Should we scroll left?
                 //if (shouldScrollLeft && canScrollLeft) {

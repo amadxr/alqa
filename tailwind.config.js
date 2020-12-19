@@ -34,10 +34,12 @@ module.exports = {
         '1/2': '50%',
       },
       width: {
+        'card-mobile': '300px',
         'card': '590px',
         'wall': '2500px',
       },
       height: {
+        'card-mobile': '350px',
         'card': '580px',
         'wall': '2100px',
       },
@@ -54,6 +56,9 @@ module.exports = {
     scale: ['hover', 'group-hover'],
     fontWeight: ['responsive', 'hover', 'group-hover'],
     margin: ['hover', 'group-hover'],
+    height: ['responsive'],
+    width: ['responsive'],
+    lineHeight: ['responsive'],
   },
   plugins: [],
 }
