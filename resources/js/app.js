@@ -25,6 +25,7 @@ Vue.component('file-upload-component', require('./components/FileUploadComponent
 Vue.component('artwork-list-component', require('./components/ArtworkListComponent.vue').default);
 Vue.component('artwork-form-component', require('./components/ArtworkFormComponent.vue').default);
 Vue.component('modal-component', require('./components/ModalComponent.vue').default);
+Vue.component('nav-component', require('./components/NavComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
