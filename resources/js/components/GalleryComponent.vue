@@ -1,11 +1,18 @@
 <template>
-    <div>
-        <div
-            @click="toggleModal" v-on:mousemove="handleMouseMovement"
-            id="wallpaper"
-            class="absolute w-screen h-screen bg-center bg-cover transform -translate-x-1/2 -translate-y-1/2 scale-160 top-1/2 left-1/2"
-            :style="backgroundStyles(wallpaper.url)">
+    <div class="absolute flex items-center w-screen h-screen">
+        <div class="h-screen w-wall lg:h-wall">
+            <div
+                @click="toggleModal" v-on:mousemove="handleMouseMovement"
+                id="wallpaper"
+                class="w-auto h-screen bg-center bg-cover translate-wall lg:h-wall"
+                :style="backgroundStyles(wallpaper.url)">
+            </div>
         </div>
+        <button
+            @click="toggleMenu"
+            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal"
+            disabled>
+        </button>
         <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
                 <p>Disculpa la molestia,</p>
@@ -20,8 +27,39 @@
                 <p>y con gusto te atenderemos.</p>
             </div>
         </modal-component>
+        <transition name="slide">
+            <nav-component v-show="showMenu" @close="showMenu = false">
+                <div slot="list">
+                    <p>Nosotros</p>
+                    <p>Contacto</p>
+                    <p>Cuadernos de Cultura</p>
+                    <p>Lista de Deseos</p>
+                    <p>Agenda tu Visita</p>
+                </div>
+            </nav-component>
+        </transition>
     </div>
 </template>
+
+<style>
+    .translate-wall {
+        transition:all .5s ease-out;
+    }
+    .slide-enter-active {
+      animation: menu-slide .5s;
+    }
+    .slide-leave-active {
+      animation: menu-slide .5s reverse;
+    }
+    @keyframes menu-slide {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+</style>
 
 <script>
     export default {
@@ -53,6 +91,7 @@
                     y: 0,
                 },
                 showModal: false,
+                showMenu: false,
             };
         },
         methods: {
@@ -100,60 +139,50 @@
                 this.currentMousePosition.x = event.clientX;
                 this.currentMousePosition.y = event.clientY;
 
-                var shouldScrollLeft = (this.currentMousePosition.x < this.previousMousePosition.x);
-                var shouldScrollRight = (this.currentMousePosition.x > this.previousMousePosition.x);
-                var shouldScrollUp = (this.currentMousePosition.y < this.previousMousePosition.y);
-                var shouldScrollDown = (this.currentMousePosition.y > this.previousMousePosition.y);
+                var deltaX = this.currentMousePosition.x - this.previousMousePosition.x;
+                var deltaY = this.currentMousePosition.y - this.previousMousePosition.y;
 
-                // Get the current scroll position of the document.
-                this.currentScrollPosition.x = window.pageXOffset;
-                this.currentScrollPosition.y = window.pageYOffset;
+                // Figure out how much should the gallery wall move.
+                var wallWidth = document.getElementById('wallpaper').offsetWidth;
+                var wallHeight = document.getElementById('wallpaper').offsetHeight;
+                var viewportWidth = document.documentElement.clientWidth;
+                var viewportHeight = document.documentElement.clientHeight;
+                var distanceX = wallWidth * deltaX * 1 / viewportWidth;
+                var distanceY = wallHeight + deltaY * -1 / viewportHeight;
 
-                // Determine if the window can be scrolled in any particular direction.
-                var canScrollUp = (this.currentScrollPosition.y > 0);
-                var canScrollDown = (this.currentScrollPosition.y < this.maxScrollY);
-                var canScrollLeft = (this.currentScrollPosition.x > 0);
-                var canScrollRight = (this.currentScrollPosition.x < this.maxScrollX);
-
-                // Let's figure out the next scroll coordinates
-                var nextScrollX = this.currentScrollPosition.x;
-                var nextScrollY = this.currentScrollPosition.y;
-
-                var maxStep = 10;
+                // Let's move the gallery wall.
+                var wall = document.getElementById("wallpaper");
+                //wall.style.transform = "translate(" + distanceX + "px, " + distanceY + "px)";
 
                 // Should we scroll left?
-                if (shouldScrollLeft && canScrollLeft) {
-                    nextScrollX = (nextScrollX - maxStep);
+                //if (shouldScrollLeft && canScrollLeft) {
+                    //nextScrollX = (nextScrollX - maxStep);
                 // Should we scroll right?
-                } else if (shouldScrollRight && canScrollRight) {
-                    nextScrollX = (nextScrollX + maxStep);
-                }
+                //} else if (shouldScrollRight && canScrollRight) {
+                    //nextScrollX = (nextScrollX + maxStep);
+                //}
                 // Should we scroll up?
-                if (shouldScrollUp && canScrollUp) {
-                    nextScrollY = (nextScrollY - maxStep);
+                //if (shouldScrollUp && canScrollUp) {
+                    //nextScrollY = (nextScrollY - maxStep);
                 // Should we scroll down?
-                } else if (shouldScrollDown && canScrollDown) {
-                    nextScrollY = (nextScrollY + maxStep);
-                }
+                //} else if (shouldScrollDown && canScrollDown) {
+                    //nextScrollY = (nextScrollY + maxStep);
+                //}
 
-                nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
-                nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
+                //nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
+                //nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
 
                 // Save the current mouse position for the next time
                 this.previousMousePosition.x = this.currentMousePosition.x;
                 this.previousMousePosition.y = this.currentMousePosition.y;
-
-                // Move window if there's space to move
-                if (
-                    (nextScrollX !== this.currentScrollPosition.x) ||
-                    (nextScrollY !== this.currentScrollPosition.y)
-                    ) {
-                    window.scrollTo(nextScrollX, nextScrollY);
-                }
             },
 
             toggleModal () {
                 this.showModal = !this.showModal;
+            },
+
+            toggleMenu () {
+                this.showMenu = !this.showMenu;
             },
         }
     }

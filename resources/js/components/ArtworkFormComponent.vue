@@ -148,7 +148,7 @@
 
                 formData.append('data', json);
 
-                this.files.forEach((file, index) => 
+                this.files.forEach((file, index) =>
                     formData.append('files[' + index + ']', file));
 
                 if (this.art) {
@@ -198,7 +198,7 @@
 
             setMessages (response) {
                 let messages = response.data.messages;
-                
+
                 this.messages.success = messages.success;
                 this.messages.info = messages.info;
             },
