@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const tailwindcss = require('tailwindcss');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,4 +13,16 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+    .postCss('resources/css/tw.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+        require('postcss-nested'),
+    ])
+    .browserSync({
+        open: 'external',
+        host: 'alqa.dev',
+        proxy: 'alqa.dev',
+        files: ['resources/views/**/*.php', 'app/**/*.php', 'routes/**/*.php', 'public/js/*.js', 'public/css/*.css']
+    });
+
+mix.copyDirectory('resources/assets/fonts', 'public/fonts');

@@ -1,13 +1,65 @@
 <template>
-    <div class="vh-100">
-        <wall-component
-            v-bind:max-scroll-x="this.maxScrollX"
-            v-bind:max-scroll-y="this.maxScrollY"
-            v-bind:wallpaper="this.wallpaper"
-            :style="wallStyle"
-        /> 
+    <div class="absolute flex items-center w-screen h-screen">
+        <div class="h-screen w-wall lg:h-wall">
+            <div
+                @click="toggleModal" v-on:mousemove="handleMouseMovement"
+                id="wallpaper"
+                class="w-auto h-screen bg-center bg-cover translate-wall lg:h-wall"
+                :style="backgroundStyles(wallpaper.url)">
+            </div>
+        </div>
+        <button
+            @click="toggleMenu"
+            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal"
+            disabled>
+        </button>
+        <modal-component v-if="showModal" @close="showModal = false">
+            <div slot="first">
+                <p>Disculpa la molestia,</p>
+                <p>momentáneamente estamos</p>
+                <p>trabajando para mejorar</p>
+                <p>tu experiencia</p>
+                <p>en nuestro sitio web.</p>
+            </div>
+            <div slot="second">
+                <p>Si necesitas ponerte en contacto con nosotros</p>
+                <p>escríbenos a hola@alqagaleria.com</p>
+                <p>y con gusto te atenderemos.</p>
+            </div>
+        </modal-component>
+        <transition name="slide">
+            <nav-component v-show="showMenu" @close="showMenu = false">
+                <div slot="list">
+                    <p>Nosotros</p>
+                    <p>Contacto</p>
+                    <p>Cuadernos de Cultura</p>
+                    <p>Lista de Deseos</p>
+                    <p>Agenda tu Visita</p>
+                </div>
+            </nav-component>
+        </transition>
     </div>
 </template>
+
+<style>
+    .translate-wall {
+        transition:all .5s ease-out;
+    }
+    .slide-enter-active {
+      animation: menu-slide .5s;
+    }
+    .slide-leave-active {
+      animation: menu-slide .5s reverse;
+    }
+    @keyframes menu-slide {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+</style>
 
 <script>
     export default {
@@ -15,21 +67,31 @@
             this.fetchWallpaper();
         },
         mounted () {
-            this.getMeasurements()
+            this.getMeasurements();
+            this.prepareForInteraction();
         },
         data () {
             return {
-                wallStyle: {
-                    height: '235%',
-                    width: '160%',
-                    backgroundColor: '#E8E5D1',
-                },
+                maxScrollX: 0,
+                maxScrollY: 0,
                 wallpaper: {
                     'url': null,
                     'active': false,
                 },
-                maxScrollX: 0,
-                maxScrollY: 0
+                currentScrollPosition: {
+                    x: 0,
+                    y: 0,
+                },
+                previousMousePosition: {
+                    x: 0,
+                    y: 0,
+                },
+                currentMousePosition: {
+                    x: 0,
+                    y: 0,
+                },
+                showModal: false,
+                showMenu: false,
             };
         },
         methods: {
@@ -40,30 +102,27 @@
                     });
             },
 
+            backgroundStyles (image) {
+                return {
+                    'background-image': `url(${image})`,
+                }
+            },
+
             getMeasurements () {
                 var viewportWidth = document.documentElement.clientWidth;
                 var viewportHeight = document.documentElement.clientHeight;
 
-                var documentWidth = Math.max(
-                    document.body.scrollWidth,
-                    document.body.offsetWidth,
-                    document.body.clientWidth,
-                    document.documentElement.scrollWidth,
-                    document.documentElement.offsetWidth,
-                    document.documentElement.clientWidth
-                );
-
-                var documentHeight = Math.max(
-                    document.body.scrollHeight,
-                    document.body.offsetHeight,
-                    document.body.clientHeight,
-                    document.documentElement.scrollHeight,
-                    document.documentElement.offsetHeight,
-                    document.documentElement.clientHeight
-                );
+                var documentWidth = document.getElementById('wallpaper').offsetWidth;
+                var documentHeight = document.getElementById('wallpaper').offsetHeight;
 
                 this.maxScrollX = (documentWidth - viewportWidth);
                 this.maxScrollY = (documentHeight - viewportHeight);
+            },
+
+            prepareForInteraction () {
+                this.currentScrollPosition.x = this.maxScrollX / 2;
+                this.currentScrollPosition.y = this.maxScrollY / 2;
+                history.scrollRestoration = 'manual';
             },
 
             setWallpaper (response) {
@@ -73,6 +132,57 @@
                     this.wallpaper.url = wallpaper.image.url;
                     this.wallpaper.active = wallpaper.active;
                 }
+            },
+
+            handleMouseMovement (event) {
+                // Verify in what direction the window should move.
+                this.currentMousePosition.x = event.clientX;
+                this.currentMousePosition.y = event.clientY;
+
+                var deltaX = this.currentMousePosition.x - this.previousMousePosition.x;
+                var deltaY = this.currentMousePosition.y - this.previousMousePosition.y;
+
+                // Figure out how much should the gallery wall move.
+                var wallWidth = document.getElementById('wallpaper').offsetWidth;
+                var wallHeight = document.getElementById('wallpaper').offsetHeight;
+                var viewportWidth = document.documentElement.clientWidth;
+                var viewportHeight = document.documentElement.clientHeight;
+                var distanceX = wallWidth * deltaX * 1 / viewportWidth;
+                var distanceY = wallHeight + deltaY * -1 / viewportHeight;
+
+                // Let's move the gallery wall.
+                var wall = document.getElementById("wallpaper");
+                //wall.style.transform = "translate(" + distanceX + "px, " + distanceY + "px)";
+
+                // Should we scroll left?
+                //if (shouldScrollLeft && canScrollLeft) {
+                    //nextScrollX = (nextScrollX - maxStep);
+                // Should we scroll right?
+                //} else if (shouldScrollRight && canScrollRight) {
+                    //nextScrollX = (nextScrollX + maxStep);
+                //}
+                // Should we scroll up?
+                //if (shouldScrollUp && canScrollUp) {
+                    //nextScrollY = (nextScrollY - maxStep);
+                // Should we scroll down?
+                //} else if (shouldScrollDown && canScrollDown) {
+                    //nextScrollY = (nextScrollY + maxStep);
+                //}
+
+                //nextScrollX = Math.max(0, Math.min(this.maxScrollX, nextScrollX));
+                //nextScrollY = Math.max(0, Math.min(this.maxScrollY, nextScrollY));
+
+                // Save the current mouse position for the next time
+                this.previousMousePosition.x = this.currentMousePosition.x;
+                this.previousMousePosition.y = this.currentMousePosition.y;
+            },
+
+            toggleModal () {
+                this.showModal = !this.showModal;
+            },
+
+            toggleMenu () {
+                this.showMenu = !this.showMenu;
             },
         }
     }
