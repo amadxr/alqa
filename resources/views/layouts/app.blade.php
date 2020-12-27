@@ -10,13 +10,10 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
-
     <!-- Styles -->
     <link href="{{ mix('css/tw.css') }}" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body class="overflow-hidden">
     <div id="app">
         <!-- <nav class="bg-white navbar navbar-expand-md navbar-light shadow-sm"> -->
         <!--     <div class="container"> -->
@@ -74,9 +71,12 @@
         <!--     </div> -->
         <!-- </nav> -->
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>
+
+    <!-- Scripts -->
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

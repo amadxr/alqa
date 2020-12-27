@@ -11,6 +11,7 @@ module.exports = {
         'button-hover': '#EAE6DF',
         'button-alt-hover': '#847777',
         'alqa-charcoal': '#303030',
+        'adobe': '#DCA382',
       },
       fontFamily: {
         'alqa-special': 'Sometimes Times, serif',
