@@ -96,7 +96,7 @@
         },
         methods: {
             fetchWallpaper () {
-                axios.get(process.env.MIX_APP_URL + 'api/wallpapers')
+                axios.get(process.env.MIX_APP_URL + '/api/wallpapers')
                     .then(response => {
                         this.setWallpaper(response);
                     });

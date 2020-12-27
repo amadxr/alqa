@@ -60,13 +60,14 @@
  Culqi.settings({
     title: 'Alqa',
     currency: 'USD',
-    description: 'Alqa Artworks',
+    description: 'Alqa Galeria',
     amount: {{ $wishlistItems->sum('price_in_cents') }}
 });
 
 const cardButton = document.getElementById('button__checkout');
 cardButton.addEventListener('click', function (e) {
     Culqi.open();
+    e.preventDefault();
 });
 
 </script>

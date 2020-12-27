@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Artwork;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    $randomItemsIds = Artwork::all()->random(rand(1, 5))->pluck('id');
+    session(['cart.items' => $randomItemsIds]);
     return view('welcome');
 });
 
-Route::get('/checkout', 'CheckoutController@index');
+Route::get('/cart', 'CheckoutController@index');
 Route::post('/checkout', 'CheckoutController@store');
 Route::get('/checkout/thanks', 'ThanksCheckoutController');
 

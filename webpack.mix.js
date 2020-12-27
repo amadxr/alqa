@@ -12,17 +12,25 @@ const tailwindcss = require('tailwindcss');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/tw.css', 'public/css', [
-        require('postcss-import'),
-        require('tailwindcss'),
-        require('postcss-nested'),
-    ])
-    .browserSync({
-        open: 'external',
-        host: 'alqa.dev',
-        proxy: 'alqa.dev',
-        files: ['resources/views/**/*.php', 'app/**/*.php', 'routes/**/*.php', 'public/js/*.js', 'public/css/*.css']
-    });
+mix
+	.js('resources/js/app.js', 'public/js')
+	.postCss('resources/css/tw.css', 'public/css', [
+		require('postcss-import'),
+		require('tailwindcss'),
+		require('postcss-nested'),
+	])
+	.sass('resources/sass/app.scss', 'public/css')
+	.browserSync({
+		open: 'external',
+		host: 'alqa.test',
+		proxy: 'alqa.test',
+		files: [
+			'resources/views/**/*.php',
+			'app/**/*.php',
+			'routes/**/*.php',
+			'public/js/*.js',
+			'public/css/*.css',
+		],
+	});
 
 mix.copyDirectory('resources/assets/fonts', 'public/fonts');

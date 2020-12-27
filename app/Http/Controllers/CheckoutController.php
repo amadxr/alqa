@@ -10,11 +10,9 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        $randomItemsIds = Artwork::all()->random(rand(1, 5))->pluck('id');
-        session(['wishlist.items' => $randomItemsIds]);
         $wishlistItems = Artwork::whereIn(
             'id',
-            session('wishlist.items')
+            session('cart.items')
         )->get();
 
         return view('billing.checkout', compact('wishlistItems'));
@@ -28,7 +26,7 @@ class CheckoutController extends Controller
         ]);
         $artworks = Artwork::whereIn(
             'id',
-            session()->pull('wishlist.items')
+            session()->pull('cart.items')
         )->get();
 
         $response = Http::withToken(config('billing.culqi.private_key'))
