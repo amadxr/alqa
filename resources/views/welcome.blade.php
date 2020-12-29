@@ -15,7 +15,7 @@
             Lista de Deseos ({{ optional(session('cart.items'))->count() }})
           </a>
         </div>
-        <div class="flex-grow text-center rouded-2">ALQA</div>
+        <div class="flex-grow text-center rounded-2">ALQA</div>
         <div class="flex-none ">
             <button
                 @click="toggleMenu"
