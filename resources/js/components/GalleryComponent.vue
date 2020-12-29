@@ -10,8 +10,7 @@
         </div>
         <button
             @click="toggleMenu"
-            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal"
-            disabled>
+            class="fixed top-0 right-0 w-10 h-10 mt-6 mr-6 uppercase rounded-full bg-alqa-charcoal">
         </button>
         <modal-component v-if="showModal" @close="showModal = false">
             <div slot="first">
@@ -28,15 +27,7 @@
             </div>
         </modal-component>
         <transition name="slide">
-            <nav-component v-show="showMenu" @close="showMenu = false">
-                <div slot="list">
-                    <p>Nosotros</p>
-                    <p>Contacto</p>
-                    <p>Cuadernos de Cultura</p>
-                    <p>Lista de Deseos</p>
-                    <p>Agenda tu Visita</p>
-                </div>
-            </nav-component>
+            <nav-component v-show="showMenu" @close="showMenu = false"/>
         </transition>
     </div>
 </template>
@@ -96,7 +87,7 @@
         },
         methods: {
             fetchWallpaper () {
-                axios.get(process.env.MIX_APP_URL + '/api/wallpapers')
+                axios.get(process.env.MIX_APP_URL + 'api/wallpapers')
                     .then(response => {
                         this.setWallpaper(response);
                     });
