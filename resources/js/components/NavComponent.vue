@@ -10,7 +10,7 @@
             </span>
             <span class="inline-block mr-16 origin-left transform scale-x-400 transition-all duration-300 ease-in-out group-hover:scale-x-600 group-hover:mr-28"> _ </span>
             <span>
-                {{ menuItem }}
+                <a href="/cart">{{ menuItem }}</a>
             </span>
         </div>
     </div>
