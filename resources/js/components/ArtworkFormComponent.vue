@@ -1,75 +1,92 @@
 <template>
-    <div>
+    <div class="">
         <div class="alert alert-success" v-if="messages.success">
             <strong>Success!</strong> {{ messages.success }}
         </div>
-        <div>
-            <form method="post" @submit.prevent="onSubmit">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="inputName" placeholder="Name" v-model="artwork.name">
-                    <span v-if="errors.data.artwork.name" class="help-block text-danger">{{ errors.data.artwork.name[0] }}</span>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="inputOrigin" placeholder="Origin" v-model="artwork.origin">
-                    <span v-if="errors.data.artwork.origin" class="help-block text-danger">{{ errors.data.artwork.origin[0] }}</span>
-                </div>
-                <div class="form-group">
-                    <textarea rows="3" class="form-control" id="inputDescription" placeholder="Description" v-model="artwork.description"></textarea>
-                    <span v-if="errors.data.artwork.description" class="help-block text-danger">{{ errors.data.artwork.description[0] }}</span>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="inputWidth" placeholder="Width" v-model="artwork.width">
-                        <div class="input-group-append">
-                            <span class="input-group-text">cm</span>
+        <form class="relative flex flex-col flex-1 w-full p-20 space-y-4" method="post" @submit.prevent="onSubmit">
+            <div class="flex flex-row w-full space-x-4">
+                <div class="flex flex-col w-2/3 p-4 bg-gray-200 divide-y-2 divide-black">
+                    <div class="pb-4">
+                        <p>Basic Information</p>
+                    </div>
+                    <div class="pt-4 space-y-6">
+                        <div class="flex flex-col">
+                            <input type="text" class="w-2/3 bg-gray-100" id="inputName" placeholder="Name" v-model="artwork.name">
+                            <span v-if="errors.data.artwork.name" class="text-sm text-red-500">{{ errors.data.artwork.name[0] }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <input type="text" class="w-1/2 bg-gray-100" id="inputOrigin" placeholder="Origin" v-model="artwork.origin">
+                            <span v-if="errors.data.artwork.origin" class="text-sm text-red-500">{{ errors.data.artwork.origin[0] }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <textarea rows="3" class="w-full bg-gray-100" id="inputDescription" placeholder="Description" v-model="artwork.description"></textarea>
+                            <span v-if="errors.data.artwork.description" class="text-sm text-red-500">{{ errors.data.artwork.description[0] }}</span>
                         </div>
                     </div>
-                    <span v-if="errors.data.artwork.width" class="help-block text-danger">{{ errors.data.artwork.width[0] }}</span>
                 </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="inputLength" placeholder="Length" v-model="artwork.length">
-                        <div class="input-group-append">
-                            <span class="input-group-text">cm</span>
+                <div class="flex flex-col flex-1 space-y-4">
+                    <div class="p-4 bg-gray-200 divide-y-2 divide-black">
+                        <div class="pb-4">
+                            <p>Measurements</p>
+                        </div>
+                        <div class="pt-4 space-y-6">
+                            <div class="flex flex-col">
+                                <div class="flex flex-row space-x-1">
+                                    <input type="text" class="w-1/3 bg-gray-100" id="inputWidth" placeholder="Width" v-model="artwork.width">
+                                    <span>cm</span>
+                                </div>
+                                <span v-if="errors.data.artwork.width" class="text-sm text-red-500">{{ errors.data.artwork.width[0] }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex flex-row space-x-1">
+                                    <input type="text" class="w-1/3 bg-gray-100" id="inputLength" placeholder="Length" v-model="artwork.length">
+                                    <span>cm</span>
+                                </div>
+                                <span v-if="errors.data.artwork.length" class="text-sm text-red-500">{{ errors.data.artwork.length[0] }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex flex-row space-x-1">
+                                    <input type="text" class="w-1/3 bg-gray-100" id="inputDepth" placeholder="Depth" v-model="artwork.depth">
+                                    <span>cm</span>
+                                </div>
+                                <span v-if="errors.data.artwork.depth" class="text-sm text-red-500">{{ errors.data.artwork.depth[0] }}</span>
+                            </div>
                         </div>
                     </div>
-                    <span v-if="errors.data.artwork.length" class="help-block text-danger">{{ errors.data.artwork.length[0] }}</span>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="inputDepth" placeholder="Depth" v-model="artwork.depth">
-                        <div class="input-group-append">
-                            <span class="input-group-text">cm</span>
+                    <div class="p-4 bg-gray-200 divide-y-2 divide-black">
+                        <div class="pb-4">
+                            <p>Registry Data</p>
+                        </div>
+                        <div class="pt-4 space-y-6">
+                            <div class="flex flex-col">
+                                <input type="text" class="w-2/3 bg-gray-100" id="inputSKU" placeholder="SKU" v-model="artwork.sku" :readonly="art">
+                                <span v-if="errors.data.artwork.sku" class="text-sm text-red-500">{{ errors.data.artwork.sku[0] }}</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex flex-row space-x-1">
+                                    <span>$</span>
+                                    <input type="text" class="w-1/3 bg-gray-100" id="inputPrice" placeholder="Price" v-model="artwork.price">
+                                </div>
+                                <span v-if="errors.data.artwork.price" class="text-sm text-red-500">{{ errors.data.artwork.price[0] }}</span>
+                            </div>
                         </div>
                     </div>
-                    <span v-if="errors.data.artwork.depth" class="help-block text-danger">{{ errors.data.artwork.depth[0] }}</span>
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="inputSKU" placeholder="SKU" v-model="artwork.sku" :readonly="art">
-                    <span v-if="errors.data.artwork.sku" class="help-block text-danger">{{ errors.data.artwork.sku[0] }}</span>
+            </div>
+            <div class="flex flex-col flex-1 w-full p-4 bg-gray-200 divide-y-2 divide-black">
+                <div class="flex flex-row items-center justify-between pb-4">
+                    <p>Media Section</p>
+                    <button type="button" class="flex items-center justify-center w-8 h-8 text-lg border-2 border-black rounded-full bg-adobe" @click="addFile">+</button>
                 </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
-                        </div>
-                        <input type="text" class="form-control" id="inputPrice" placeholder="Price" v-model="artwork.price">
-                    </div>
-                    <span v-if="errors.data.artwork.price" class="help-block text-danger">{{ errors.data.artwork.price[0] }}</span>
-                </div>
-                <div class="form-group">
-                    <p>Image Section</p>
-                    <button type="button" class="btn btn-outline-success btn-sm" @click="addFile">Add image</button>
-                </div>
-                <div class="form-group">
+                <div class="flex flex-row pt-4 space-x-2">
                     <file-upload-component
                         v-for="(file, index) in files" :key="index"
                         v-model="files[index]">
                     </file-upload-component>
                 </div>
-                <button type="submit" class="btn btn-dark">Submit</button>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="absolute top-0 right-0 p-2 m-5 border-2 border-black rounded-lg bg-adobe">Submit</button>
+        </form>
     </div>
 </template>
 

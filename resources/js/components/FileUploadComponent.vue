@@ -1,12 +1,8 @@
 <template>
-    <div>
-        <div class="form-group">
-            <div class="custom-file">
-                <input type="file" @change="handleFileInput" class="custom-file-input" id="customFile">
-                <label v-if="value" class="custom-file-label" for="customFile"> {{ value.url }}</label>
-                <label v-else class="custom-file-label" for="customFile">Choose file</label>
-            </div>
-        </div>
+    <div class="flex items-center justify-center w-20 h-20 bg-white border-2 border-black">
+        <input type="file" @change="handleFileInput" class="hidden" id="customFile">
+        <label v-if="value" class="custom-file-label" for="customFile"> {{ value.url }}</label>
+        <label v-else class="" for="customFile">Choose file</label>
     </div>
 </template>
 
