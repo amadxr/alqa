@@ -22,7 +22,7 @@ class CreateArtworksTable extends Migration
             $table->unsignedDecimal('length', 6, 2);
             $table->unsignedDecimal('depth', 6, 2)->nullable();
             $table->string('sku')->unique();
-            $table->unsignedDecimal('price', 8, 2);
+            $table->unsignedInteger('price_in_cents')->nullable();
             $table->timestamps();
         });
     }
