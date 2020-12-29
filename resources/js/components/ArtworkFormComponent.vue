@@ -1,11 +1,11 @@
 <template>
-    <div class="">
-        <div class="alert alert-success" v-if="messages.success">
-            <strong>Success!</strong> {{ messages.success }}
-        </div>
-        <form class="relative flex flex-col flex-1 w-full p-20 space-y-4" method="post" @submit.prevent="onSubmit">
+    <div>
+        <form class="relative flex flex-col items-center flex-1 w-full p-20 space-y-4" method="post" @submit.prevent="onSubmit">
+            <div class="absolute top-0 w-2/3 p-2 m-4 bg-green-300 border-2 border-black rounded-lg" v-if="messages.success">
+                <strong>Success!</strong> {{ messages.success }}
+            </div>
             <div class="flex flex-row w-full space-x-4">
-                <div class="flex flex-col w-2/3 p-4 bg-gray-200 divide-y-2 divide-black">
+                <div class="flex flex-col w-2/3 p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
                     <div class="pb-4">
                         <p>Basic Information</p>
                     </div>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col flex-1 space-y-4">
-                    <div class="p-4 bg-gray-200 divide-y-2 divide-black">
+                    <div class="p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
                         <div class="pb-4">
                             <p>Measurements</p>
                         </div>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-4 bg-gray-200 divide-y-2 divide-black">
+                    <div class="p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
                         <div class="pb-4">
                             <p>Registry Data</p>
                         </div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col flex-1 w-full p-4 bg-gray-200 divide-y-2 divide-black">
+            <div class="flex flex-col flex-1 w-full p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
                 <div class="flex flex-row items-center justify-between pb-4">
                     <p>Media Section</p>
                     <button type="button" class="flex items-center justify-center w-8 h-8 text-lg border-2 border-black rounded-full bg-adobe" @click="addFile">+</button>
