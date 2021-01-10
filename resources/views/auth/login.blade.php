@@ -11,7 +11,7 @@
                 @csrf
                 <div class="pb-2">
                     <label class="block" for="email">Email Address</label>
-                    <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input id="email" type="email" class="text-black px-1 @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
                         <span class="block" role="alert">
                             <strong>{{ $message }}</strong>
@@ -20,7 +20,7 @@
                 </div>
                 <div class="pb-2">
                     <label class="block" for="password">Password</label>
-                    <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                    <input id="password" type="password" class="text-black px-1 @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                     @error('password')
                         <span class="block" role="alert">
                             <strong>{{ $message }}</strong>
