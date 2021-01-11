@@ -1,6 +1,6 @@
 <template>
     <div class="relative flex flex-col flex-1 w-full p-20 overflow-auto space-y-2">
-        <button class="absolute top-0 right-0 flex items-center justify-center w-12 h-12 m-5 text-3xl border-2 border-black rounded-full bg-adobe"
+        <button class="absolute top-0 right-0 flex items-center justify-center w-12 h-12 m-5 text-3xl rounded-full bg-adobe"
             type="button" v-on:click="redirectToCreate">
             +
         </button>

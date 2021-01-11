@@ -24,7 +24,8 @@ class Artwork extends JsonResource
             'length' => $this->length,
             'depth' => $this->depth,
             'sku' => $this->sku,
-            'price' => $this->price,
+            'price' => $this->price_in_cents / 100,
+            'forSale' => $this->for_sale,
             'images' => ImageResource::collection($this->images),
         ];
     }

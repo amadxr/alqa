@@ -29,6 +29,7 @@ Vue.component('modal-component', require('./components/ModalComponent.vue').defa
 Vue.component('nav-component', require('./components/NavComponent.vue').default);
 Vue.component('navbar-component', require('./components/NavBarComponent.vue').default);
 Vue.component('dashboard-component', require('./components/DashboardComponent.vue').default);
+Vue.component('switch-component', require('./components/SwitchComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

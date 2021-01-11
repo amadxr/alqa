@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="relative flex flex-col items-center flex-1 w-full p-20 space-y-4" method="post" @submit.prevent="onSubmit">
+        <form class="relative flex flex-col items-center flex-1 w-full px-20 py-24 space-y-4" method="post" @submit.prevent="onSubmit">
             <div class="absolute top-0 w-2/3 p-2 m-4 bg-green-300 border-2 border-black rounded-lg" v-if="messages.success">
                 <strong>Success!</strong> {{ messages.success }}
             </div>
@@ -76,7 +76,7 @@
             <div class="flex flex-col flex-1 w-full p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
                 <div class="flex flex-row items-center justify-between pb-4">
                     <p>Media Section</p>
-                    <button type="button" class="flex items-center justify-center w-8 h-8 text-lg border-2 border-black rounded-full bg-adobe" @click="addFile">+</button>
+                    <button type="button" class="flex items-center justify-center w-8 h-8 text-lg rounded-full bg-adobe" @click="addFile">+</button>
                 </div>
                 <div class="flex flex-row pt-4 space-x-2">
                     <file-upload-component
@@ -85,7 +85,10 @@
                     </file-upload-component>
                 </div>
             </div>
-            <button type="submit" class="absolute top-0 right-0 p-2 m-5 border-2 border-black rounded-lg bg-adobe">Submit</button>
+            <div class="absolute top-0 right-0 flex flex-row items-center justify-end w-full h-auto px-20 py-4 space-x-4">
+                <switch-component v-if="art" v-model="artwork.forSale"></switch-component>
+                <button type="submit" class="p-2 rounded-lg bg-adobe">Submit</button>
+            </div>
         </form>
     </div>
 </template>
@@ -130,6 +133,7 @@
                     depth: null,
                     sku: null,
                     price: null,
+                    forSale: false,
                 },
                 files: [],
             };
@@ -209,6 +213,7 @@
                     this.artwork.depth = artwork.depth;
                     this.artwork.sku = artwork.sku;
                     this.artwork.price = artwork.price;
+                    this.artwork.forSale = artwork.forSale;
                     this.files = artwork.images;
                 }
             },
