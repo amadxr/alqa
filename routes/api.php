@@ -27,6 +27,6 @@ Route::group(['prefix' => 'artworks'], function () {
     Route::get('/', 'Api\ArtworkController@index');
     Route::get('/{id}', 'Api\ArtworkController@show');
     Route::post('/', 'Api\ArtworkController@store');
-    Route::put('/', 'Api\ArtworkController@update');
+    Route::put('/{artwork}', 'Api\ArtworkController@update');
     Route::delete('/{id}', 'Api\ArtworkController@delete');
 });

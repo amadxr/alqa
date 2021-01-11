@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Artwork;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreArtwork;
-use App\Http\Requests\UpdateArtwork;
+use App\Http\Requests\ArtworkRequest;
 use App\Http\Resources\Artwork as ArtworkResource;
 use App\Image;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ArtworkController extends Controller
@@ -56,7 +54,7 @@ class ArtworkController extends Controller
         ], 200);
     }
 
-    public function store(StoreArtwork $request)
+    public function store(ArtworkRequest $request)
     {
         $artworkData = $request->data['artwork'];
 
@@ -69,6 +67,7 @@ class ArtworkController extends Controller
             'depth' => $artworkData['depth'],
             'sku' => $artworkData['sku'],
             'price_in_cents' => $artworkData['price'] * 100,
+            'for_sale' => $artworkData['forSale'],
         ];
 
         $artwork = Artwork::create($artworkArray);
@@ -100,7 +99,7 @@ class ArtworkController extends Controller
         ], 200);
     }
 
-    public function update(UpdateArtwork $request)
+    public function update(ArtworkRequest $request, Artwork $artwork)
     {
         $artworkData = $request->data['artwork'];
 
@@ -111,23 +110,12 @@ class ArtworkController extends Controller
             'width' => $artworkData['width'],
             'length' => $artworkData['length'],
             'depth' => $artworkData['depth'],
-            'price' => $artworkData['price'],
+            'price_in_cents' => $artworkData['price'] * 100,
+            'for_sale' => $artworkData['forSale'],
         ];
 
-        $artwork = Artwork::find($artworkData['id']);
-
-        if (is_null($artwork)) {
-            return response()->json([
-                'errors' => [
-                    'id' => [
-                        'The artwork being updated does not exist in the database.'
-                    ]
-                ],
-            ], 422);
-        } else {
-            $artwork->update($artworkArray);
-            $success = "Artwork successfully updated!";
-        }
+        $artwork->update($artworkArray);
+        $success = "Artwork successfully updated!";
 
         return response()->json([
             'data' => [
