@@ -23,6 +23,7 @@ class CreateArtworksTable extends Migration
             $table->unsignedDecimal('depth', 6, 2)->nullable();
             $table->string('sku')->unique();
             $table->unsignedInteger('price_in_cents')->nullable();
+            $table->boolean('for_sale')->default(false);
             $table->timestamps();
         });
     }

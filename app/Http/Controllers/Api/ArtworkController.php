@@ -68,7 +68,7 @@ class ArtworkController extends Controller
             'length' => $artworkData['length'],
             'depth' => $artworkData['depth'],
             'sku' => $artworkData['sku'],
-            'price' => $artworkData['price'],
+            'price_in_cents' => $artworkData['price'],
         ];
 
         $artwork = Artwork::create($artworkArray);
