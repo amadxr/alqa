@@ -15,6 +15,9 @@
 </head>
 <body class="overflow-hidden">
     <div id="app">
+      @foreach($artworkTypes as $type)
+        <a>{{ $type->name  }}</a>
+      @endforeach
         <!-- <nav class="bg-white navbar navbar-expand-md navbar-light shadow-sm"> -->
         <!--     <div class="container"> -->
         <!--         <a class="navbar-brand" href="{{ url('home') }}"> -->
