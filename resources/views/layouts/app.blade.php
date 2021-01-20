@@ -16,7 +16,7 @@
 <body class="overflow-hidden">
     <div id="app">
       @foreach($artworkTypes as $type)
-        <a>{{ $type->name  }}</a>
+        <a href="{{ route('index', [ 'filter' => $type->slug ])  }}">{{ $type->name  }}</a>
       @endforeach
         <!-- <nav class="bg-white navbar navbar-expand-md navbar-light shadow-sm"> -->
         <!--     <div class="container"> -->
