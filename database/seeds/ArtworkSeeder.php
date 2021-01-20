@@ -14,12 +14,12 @@ class ArtworkSeeder extends Seeder
   public function run()
   {
       ArtworkType::insert([
-          ['name' => 'Textiles'],
-          ['name' => 'Mates Burilados'],
-          ['name' => 'Cerámicas'],
-          ['name' => 'Imaginería'],
-          ['name' => 'Sombreros'],
-          ['name' => 'Orfebrería'],
+          ['name' => 'Textiles', 'slug' => 'textiles'],
+          ['name' => 'Mates Burilados', 'slug' => 'chipped_mattes'],
+          ['name' => 'Cerámicas', 'slug' => 'ceramics'],
+          ['name' => 'Imaginería', 'slug' => 'imagery'],
+          ['name' => 'Sombreros', 'slug' => 'hats'],
+          ['name' => 'Orfebrería', 'slug' => 'goldsmith'],
       ]);
       factory(Artwork::class, 50)->create();
   }
