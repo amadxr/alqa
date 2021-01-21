@@ -1,4 +1,4 @@
-<!doctype html>
+<doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -18,6 +18,12 @@
       @foreach($artworkTypes as $type)
         <a href="{{ route('index', [ 'filter' => $type->slug ])  }}">{{ $type->name  }}</a>
       @endforeach
+      <ul>
+      @foreach($artworks as $artwork)
+        <li>{{ $artwork->name }} <img src="{{ $artwork->image_url }}" loading="lazy"/>  </li>
+
+      @endforeach
+      </ul>
         <!-- <nav class="bg-white navbar navbar-expand-md navbar-light shadow-sm"> -->
         <!--     <div class="container"> -->
         <!--         <a class="navbar-brand" href="{{ url('home') }}"> -->

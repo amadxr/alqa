@@ -29,4 +29,9 @@ class Artwork extends Model
     {
         return $this->price_in_cents / 100;
     }
+
+    public function artworkType()
+    {
+        return $this->belongsTo(ArtworkType::class);
+    }
 }
