@@ -15,5 +15,7 @@ $factory->define(Artwork::class, function (Faker $faker) {
         'description' => $faker->sentence,
         'width' => $faker->randomFloat(2, 0, 100),
         'length' => $faker->randomFloat(2, 0, 100),
+        'image_url' => 'https://lorempokemon.fakerapi.it/pokemon',
+        'artwork_type_id' => $faker->numberBetween($min = 1, $max = 6),
     ];
 });
