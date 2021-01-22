@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="overflow-auto">
         <form class="relative flex flex-col items-center flex-1 w-full px-20 py-24 space-y-4" method="post" @submit.prevent="onSubmit">
             <div class="absolute top-0 w-2/3 p-2 m-4 bg-green-300 border-2 border-black rounded-lg" v-if="messages.success">
                 <strong>Success!</strong> {{ messages.success }}
@@ -19,8 +19,24 @@
                             <span v-if="errors.data.artwork.origin" class="text-sm text-red-500">{{ errors.data.artwork.origin[0] }}</span>
                         </div>
                         <div class="flex flex-col">
-                            <textarea rows="3" class="w-full bg-gray-100" id="inputDescription" placeholder="Description" v-model="artwork.description"></textarea>
-                            <span v-if="errors.data.artwork.description" class="text-sm text-red-500">{{ errors.data.artwork.description[0] }}</span>
+                            <textarea rows="3" class="w-full bg-gray-100" id="inputText1" placeholder="Text 1" v-model="artwork.text1"></textarea>
+                            <span v-if="errors.data.artwork.text1" class="text-sm text-red-500">{{ errors.data.artwork.text1[0] }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <textarea rows="3" class="w-full bg-gray-100" id="inputHighlightedText" placeholder="Highlighted Text" v-model="artwork.highlightedText"></textarea>
+                            <span v-if="errors.data.artwork.highlightedText" class="text-sm text-red-500">{{ errors.data.artwork.highlightedText[0] }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <textarea rows="3" class="w-full bg-gray-100" id="inputText2" placeholder="Text 2" v-model="artwork.text2"></textarea>
+                            <span v-if="errors.data.artwork.text2" class="text-sm text-red-500">{{ errors.data.artwork.text2[0] }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <textarea rows="3" class="w-full bg-gray-100" id="inputText3" placeholder="Text 3" v-model="artwork.text3"></textarea>
+                            <span v-if="errors.data.artwork.text3" class="text-sm text-red-500">{{ errors.data.artwork.text3[0] }}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <textarea rows="3" class="w-full bg-gray-100" id="inputText4" placeholder="Text 4" v-model="artwork.text4"></textarea>
+                            <span v-if="errors.data.artwork.text4" class="text-sm text-red-500">{{ errors.data.artwork.text4[0] }}</span>
                         </div>
                     </div>
                 </div>
@@ -39,10 +55,10 @@
                             </div>
                             <div class="flex flex-col">
                                 <div class="flex flex-row space-x-1">
-                                    <input type="text" class="w-1/3 bg-gray-100" id="inputLength" placeholder="Length" v-model="artwork.length">
+                                    <input type="text" class="w-1/3 bg-gray-100" id="inputHeight" placeholder="Height" v-model="artwork.height">
                                     <span>cm</span>
                                 </div>
-                                <span v-if="errors.data.artwork.length" class="text-sm text-red-500">{{ errors.data.artwork.length[0] }}</span>
+                                <span v-if="errors.data.artwork.height" class="text-sm text-red-500">{{ errors.data.artwork.height[0] }}</span>
                             </div>
                             <div class="flex flex-col">
                                 <div class="flex flex-row space-x-1">
@@ -71,17 +87,40 @@
                             </div>
                         </div>
                     </div>
+                    <div class="flex flex-col flex-1 p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
+                        <div class="pb-4">
+                            <p>Cover Image</p>
+                        </div>
+                        <div class="flex flex-row items-center justify-center flex-1 pt-4 space-x-8">
+                            <p>Most important image. Choose wisely!</p>
+                            <file-upload-component
+                                v-model="coverImage">
+                            </file-upload-component>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col flex-1 w-full p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
                 <div class="flex flex-row items-center justify-between pb-4">
-                    <p>Media Section</p>
-                    <button type="button" class="flex items-center justify-center w-8 h-8 text-lg rounded-full bg-adobe" @click="addFile">+</button>
+                    <p>Carousel Images</p>
+                    <button type="button" class="flex items-center justify-center w-8 h-8 text-lg rounded-full bg-adobe" @click="addFile('carousel')">+</button>
                 </div>
                 <div class="flex flex-row pt-4 space-x-2">
                     <file-upload-component
-                        v-for="(file, index) in files" :key="index"
-                        v-model="files[index]">
+                        v-for="(file, index) in carouselImages" :key="index"
+                        v-model="carouselImages[index]">
+                    </file-upload-component>
+                </div>
+            </div>
+            <div class="flex flex-col flex-1 w-full p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
+                <div class="flex flex-row items-center justify-between pb-4">
+                    <p>Flyer Images</p>
+                    <button type="button" class="flex items-center justify-center w-8 h-8 text-lg rounded-full bg-adobe" @click="addFile('flyer')">+</button>
+                </div>
+                <div class="flex flex-row pt-4 space-x-2">
+                    <file-upload-component
+                        v-for="(file, index) in flyerImages" :key="index"
+                        v-model="flyerImages[index]">
                     </file-upload-component>
                 </div>
             </div>
@@ -115,9 +154,13 @@
                         artwork: {
                             name: null,
                             origin: null,
-                            description: null,
+                            text1: null,
+                            highlightedText: null,
+                            text2: null,
+                            text3: null,
+                            text4: null,
                             width: null,
-                            length: null,
+                            height: null,
                             depth: null,
                             sku: null,
                             price: null,
@@ -127,15 +170,21 @@
                 artwork: {
                     name: null,
                     origin: null,
-                    description: null,
+                    text1: null,
+                    highlightedText: null,
+                    text2: null,
+                    text3: null,
+                    text4: null,
                     width: null,
-                    length: null,
+                    height: null,
                     depth: null,
                     sku: null,
                     price: null,
                     forSale: false,
                 },
-                files: [],
+                carouselImages: [],
+                coverImage: null,
+                flyerImages: [],
             };
         },
         methods: {
@@ -149,9 +198,14 @@
                 }
             },
 
-            addFile () {
+            addFile (arrayName) {
                 let newFile = null;
-                this.files.push(newFile);
+
+                if (arrayName == 'carousel') {
+                    this.carouselImages.push(newFile);
+                } else if (arrayName == 'flyer') {
+                    this.flyerImages.push(newFile);
+                }
             },
 
             onSubmit () {
@@ -169,14 +223,19 @@
 
                 formData.append('data', json);
 
-                this.files.forEach((file, index) =>
-                    formData.append('files[' + index + ']', file));
+                this.carouselImages.forEach((file, index) =>
+                    formData.append('carouselImages[' + index + ']', file));
+
+                this.flyerImages.forEach((file, index) =>
+                    formData.append('flyerImages[' + index + ']', file));
+
+                formData.append('coverImage', this.coverImage);
 
                 if (this.art) {
                     formData.append('_method', 'PUT');
 
                     axios
-                        .post(process.env.MIX_APP_URL + 'api/artworks', formData, config)
+                        .post(process.env.MIX_APP_URL + 'api/artworks/' + this.art, formData, config)
                         .then(response => {
                             this.setMessages(response);
                             this.setArtwork(response);

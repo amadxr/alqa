@@ -19,14 +19,23 @@ class Artwork extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'origin' => $this->origin,
-            'description' => $this->description,
+            'text1' => $this->text1,
+            'highlightedText' => $this->highlighted_text,
+            'text2' => $this->text2,
+            'text3' => $this->text3,
+            'text4' => $this->text4,
             'width' => $this->width,
-            'length' => $this->length,
+            'height' => $this->height,
             'depth' => $this->depth,
             'sku' => $this->sku,
             'price' => $this->price_in_cents / 100,
             'forSale' => $this->for_sale,
-            'images' => ImageResource::collection($this->images),
+            'carouselImages' => ImageResource::collection($this->images
+                                    ->where('display', 'carousel')),
+            'coverImage' => new ImageResource($this->images
+                                    ->firstWhere('display', 'cover')),
+            'flyerImages' => ImageResource::collection($this->images
+                                    ->where('display', 'flyer')),
         ];
     }
 }

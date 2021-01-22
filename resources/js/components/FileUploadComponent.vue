@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center justify-center w-20 h-20 overflow-hidden bg-gray-100 rounded-lg">
         <img v-if="value" class="object-cover w-full h-20" :src="this.url"/>
-        <label v-else class="text-xs">Choose file
+        <label v-else class="text-xs">Click to Pick!
             <input type="file" @change="handleFileInput" class="hidden">
         </label>
     </div>

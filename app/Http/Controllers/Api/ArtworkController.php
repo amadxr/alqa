@@ -61,9 +61,13 @@ class ArtworkController extends Controller
         $artworkArray = [
             'name' => $artworkData['name'],
             'origin' => $artworkData['origin'],
-            'description' => $artworkData['description'],
+            'text1' => $artworkData['text1'],
+            'highlighted_text' => $artworkData['highlightedText'],
+            'text2' => $artworkData['text2'],
+            'text3' => $artworkData['text3'],
+            'text4' => $artworkData['text4'],
             'width' => $artworkData['width'],
-            'length' => $artworkData['length'],
+            'height' => $artworkData['height'],
             'depth' => $artworkData['depth'],
             'sku' => $artworkData['sku'],
             'price_in_cents' => $artworkData['price'] * 100,
@@ -72,11 +76,39 @@ class ArtworkController extends Controller
 
         $artwork = Artwork::create($artworkArray);
 
-        foreach ($request->files->get('files') as $key => $value) {
+        foreach ($request->files->get('carouselImages') as $key => $value) {
             $path = Storage::putFileAs(
-                'artworks/' . $artwork->sku,
+                'artworks/' . $artwork->sku . '/carousel',
                 $value,
-                $artwork->sku . '-' . $key . '.jpg',
+                $artwork->sku . '-' . 'carousel-' . $key . '.jpg',
+                'public'
+            );
+
+            $uploadedImage = new Image;
+            $uploadedImage->display = 'carousel';
+            $uploadedImage->url = $path;
+            $uploadedImage->imageable()->associate($artwork);
+            $uploadedImage->save();
+        }
+
+        $path = Storage::putFileAs(
+            'artworks/' . $artwork->sku . '/cover',
+            $request->files->get('coverImage'),
+            $artwork->sku . '-' . 'cover.jpg',
+            'public'
+        );
+
+        $uploadedImage = new Image;
+        $uploadedImage->display = 'cover';
+        $uploadedImage->url = $path;
+        $uploadedImage->imageable()->associate($artwork);
+        $uploadedImage->save();
+
+        foreach ($request->files->get('flyerImages') as $key => $value) {
+            $path = Storage::putFileAs(
+                'artworks/' . $artwork->sku . '/flyer',
+                $value,
+                $artwork->sku . '-' . 'flyer-' . $key . '.jpg',
                 'public'
             );
 
