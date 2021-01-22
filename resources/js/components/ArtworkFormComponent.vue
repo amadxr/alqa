@@ -129,6 +129,7 @@
                 <button type="submit" class="p-2 rounded-lg bg-adobe">Submit</button>
             </div>
         </form>
+        <loading-screen-component v-if="processingRequest"/>
     </div>
 </template>
 
@@ -185,6 +186,7 @@
                 carouselImages: [],
                 coverImage: null,
                 flyerImages: [],
+                processingRequest: false,
             };
         },
         methods: {
@@ -231,15 +233,16 @@
 
                 formData.append('coverImage', this.coverImage);
 
+                this.processingRequest = true;
+
                 if (this.art) {
                     formData.append('_method', 'PUT');
 
                     axios
                         .post(process.env.MIX_APP_URL + 'api/artworks/' + this.art, formData, config)
                         .then(response => {
-                            this.setMessages(response);
                             this.setArtwork(response);
-                            this.resetForm();
+                            this.setMessages(response);
                         })
                         .catch(error => {
                             this.setErrors(error.response);
@@ -249,9 +252,8 @@
                     axios
                         .post(process.env.MIX_APP_URL + 'api/artworks', formData, config)
                         .then(response => {
-                            this.setMessages(response);
                             this.setArtwork(response);
-                            this.resetForm();
+                            this.setMessages(response);
                         })
                         .catch(error => {
                             this.setErrors(error.response);
@@ -266,20 +268,27 @@
                 if (artwork !== null) {
                     this.artwork.name = artwork.name;
                     this.artwork.origin = artwork.origin;
-                    this.artwork.description = artwork.description;
+                    this.artwork.text1 = artwork.description;
+                    this.artwork.highlightedText = artwork.description;
+                    this.artwork.text2 = artwork.description;
+                    this.artwork.text3 = artwork.description;
+                    this.artwork.text4 = artwork.description;
                     this.artwork.width = artwork.width;
-                    this.artwork.length = artwork.length;
+                    this.artwork.height = artwork.length;
                     this.artwork.depth = artwork.depth;
                     this.artwork.sku = artwork.sku;
                     this.artwork.price = artwork.price;
                     this.artwork.forSale = artwork.forSale;
-                    this.files = artwork.images;
+                    this.carouselImages = artwork.carouselImages;
+                    this.coverImage = artwork.coverImage;
+                    this.flyerImages = artwork.flyerImages;
                 }
             },
 
             setMessages (response) {
                 let messages = response.data.messages;
 
+                this.processingRequest = false;
                 this.messages.success = messages.success;
                 this.messages.info = messages.info;
             },
@@ -289,16 +298,22 @@
 
                 this.errors.data.artwork.name = errors['data.artwork.name'];
                 this.errors.data.artwork.origin = errors['data.artwork.origin'];
-                this.errors.data.artwork.description = errors['data.artwork.description'];
+                this.errors.data.artwork.text1 = errors['data.artwork.text1'];
+                this.errors.data.artwork.highlightedText = errors['data.artwork.text1'];
+                this.errors.data.artwork.text2 = errors['data.artwork.text1'];
+                this.errors.data.artwork.text3 = errors['data.artwork.text1'];
+                this.errors.data.artwork.text4 = errors['data.artwork.text1'];
                 this.errors.data.artwork.width = errors['data.artwork.width'];
-                this.errors.data.artwork.length = errors['data.artwork.length'];
+                this.errors.data.artwork.height = errors['data.artwork.length'];
                 this.errors.data.artwork.depth = errors['data.artwork.depth'];
                 this.errors.data.artwork.sku = errors['data.artwork.sku'];
                 this.errors.data.artwork.price = errors['data.artwork.price'];
             },
 
             resetForm () {
-                this.file = null;
+                this.carouselImages = null;
+                this.coverImage = null;
+                this.flyerImages = null;
             },
         }
     }

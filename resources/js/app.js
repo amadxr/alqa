@@ -30,6 +30,7 @@ Vue.component('nav-component', require('./components/NavComponent.vue').default)
 Vue.component('navbar-component', require('./components/NavBarComponent.vue').default);
 Vue.component('dashboard-component', require('./components/DashboardComponent.vue').default);
 Vue.component('switch-component', require('./components/SwitchComponent.vue').default);
+Vue.component('loading-screen-component', require('./components/LoadingScreenComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
