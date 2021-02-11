@@ -3,132 +3,105 @@
 namespace App\Http\Controllers\Api;
 
 use App\Artwork;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\ArtworkRequest;
 use App\Http\Resources\Artwork as ArtworkResource;
 use App\Image;
 use Illuminate\Support\Facades\Storage;
 
-class ArtworkController extends Controller
+class ArtworkController extends ApiController
 {
     public function index()
     {
         $artworks = Artwork::all();
 
-        if ($artworks->isNotEmpty()) {
-            $info = 'Artworks fetched successfully!';
-            $artworks = ArtworkResource::collection($artworks);
-        } else {
-            $info = 'There are no artworks yet.';
-            $artworks = null;
-        }
-
-        return response()->json([
-            'data' => [
-                'artworks' => $artworks,
-            ],
-            'messages' => [
-                'info' => $info,
-            ]
-        ], 200);
+        return $this->successResponse(ArtworkResource::collection($artworks));
     }
 
     public function show($id)
     {
-        $artwork = Artwork::find($id);
+        $artwork = Artwork::findOrFail($id);
 
-        if (is_null($artwork)) {
-            $info = 'Artwork not found.';
-        } else {
-            $info = 'Artwork fetched successfully!';
-            $artwork = new ArtworkResource($artwork);
-        }
-
-        return response()->json([
-            'data' => [
-                'artwork' => $artwork,
-            ],
-            'messages' => [
-                'info' => $info,
-            ]
-        ], 200);
+        return $this->successResponse(new ArtworkResource($artwork));
     }
 
     public function store(ArtworkRequest $request)
     {
-        $artworkData = $request->data['artwork'];
+        try {
+            $artworkData = $request->data['artwork'];
 
-        $artworkArray = [
-            'name' => $artworkData['name'],
-            'origin' => $artworkData['origin'],
-            'text1' => $artworkData['text1'],
-            'highlighted_text' => $artworkData['highlightedText'],
-            'text2' => $artworkData['text2'],
-            'text3' => $artworkData['text3'],
-            'text4' => $artworkData['text4'],
-            'width' => $artworkData['width'],
-            'height' => $artworkData['height'],
-            'depth' => $artworkData['depth'],
-            'sku' => $artworkData['sku'],
-            'price_in_cents' => $artworkData['price'] * 100,
-            'for_sale' => $artworkData['forSale'],
-        ];
+            $artworkArray = [
+                'name' => $artworkData['name'],
+                'origin' => $artworkData['origin'],
+                'text1' => $artworkData['text1'],
+                'highlighted_text' => $artworkData['highlightedText'],
+                'text2' => $artworkData['text2'],
+                'text3' => $artworkData['text3'],
+                'text4' => $artworkData['text4'],
+                'width' => $artworkData['width'],
+                'height' => $artworkData['height'],
+                'depth' => $artworkData['depth'],
+                'sku' => $artworkData['sku'],
+                'price_in_cents' => $artworkData['price'] * 100,
+                'for_sale' => $artworkData['forSale'],
+            ];
 
-        $artwork = Artwork::create($artworkArray);
+            $filesArray = [];
 
-        foreach ($request->files->get('carouselImages') as $key => $value) {
+            foreach ($request->files->get('carouselImages') as $key => $value) {
+                $path = Storage::putFileAs(
+                    'artworks/' . $artworkArray['sku'] . '/carousel',
+                    $value,
+                    $artworkArray['sku'] . '-' . 'carousel-' . $key . '.jpg',
+                    'public'
+                );
+
+                array_push($filesArray, [
+                    'display' => 'carousel',
+                    'url' => $path
+                ]);
+            }
+
             $path = Storage::putFileAs(
-                'artworks/' . $artwork->sku . '/carousel',
-                $value,
-                $artwork->sku . '-' . 'carousel-' . $key . '.jpg',
+                'artworks/' . $artworkArray['sku'] . '/cover',
+                $request->files->get('coverImage'),
+                $artworkArray['sku'] . '-' . 'cover.jpg',
                 'public'
             );
 
-            $uploadedImage = new Image;
-            $uploadedImage->display = 'carousel';
-            $uploadedImage->url = $path;
-            $uploadedImage->imageable()->associate($artwork);
-            $uploadedImage->save();
+            array_push($filesArray, [
+                'display' => 'cover',
+                'url' => $path
+            ]);
+
+            foreach ($request->files->get('flyerImages') as $key => $value) {
+                $path = Storage::putFileAs(
+                    'artworks/' . $artworkArray['sku'] . '/flyer',
+                    $value,
+                    $artworkArray['sku'] . '-' . 'flyer-' . $key . '.jpg',
+                    'public'
+                );
+
+                array_push($filesArray, [
+                    'display' => 'flyer',
+                    'url' => $path
+                ]);
+            }
+
+            $artwork = Artwork::create($artworkArray);
+
+            foreach ($filesArray as $key => $value) {
+                $uploadedImage = new Image;
+                $uploadedImage->display = $value['display'];
+                $uploadedImage->url = $value['url'];
+                $uploadedImage->imageable()->associate($artwork);
+                $uploadedImage->save();
+            }
+        } catch (Throwable $e) {
+            return 'hi';
         }
 
-        $path = Storage::putFileAs(
-            'artworks/' . $artwork->sku . '/cover',
-            $request->files->get('coverImage'),
-            $artwork->sku . '-' . 'cover.jpg',
-            'public'
-        );
-
-        $uploadedImage = new Image;
-        $uploadedImage->display = 'cover';
-        $uploadedImage->url = $path;
-        $uploadedImage->imageable()->associate($artwork);
-        $uploadedImage->save();
-
-        foreach ($request->files->get('flyerImages') as $key => $value) {
-            $path = Storage::putFileAs(
-                'artworks/' . $artwork->sku . '/flyer',
-                $value,
-                $artwork->sku . '-' . 'flyer-' . $key . '.jpg',
-                'public'
-            );
-
-            $uploadedImage = new Image;
-            $uploadedImage->display = 'flyer';
-            $uploadedImage->url = $path;
-            $uploadedImage->imageable()->associate($artwork);
-            $uploadedImage->save();
-        }
-
-        $success = "Artwork successfully registered!";
-
-        return response()->json([
-            'data' => [
-                'artwork' => new ArtworkResource($artwork),
-            ],
-            'messages' => [
-                'success' => $success,
-            ]
-        ], 200);
+        return $this->successResponse(new ArtworkResource($artwork));
     }
 
     public function update(ArtworkRequest $request, Artwork $artwork)

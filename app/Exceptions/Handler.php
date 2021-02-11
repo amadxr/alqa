@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponser;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponser;
     /**
      * A list of the exception types that are not reported.
      *
@@ -50,6 +53,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        return parent::render($request, $exception);
+        return $this->handleException($request, $exception);
+    }
+
+    public function handleException($request, $exception)
+    {
+        if ($exception instanceof ModelNotFoundException) {
+            return $this->errorResponse('No results for given id.', 404);
+        }
+
+        return $this->errorResponse('Unexpected exception. Try later.', 500);
     }
 }

@@ -1,8 +1,8 @@
 <template>
     <div class="overflow-auto">
         <form class="relative flex flex-col items-center flex-1 w-full px-20 py-24 space-y-4" method="post" @submit.prevent="onSubmit">
-            <div class="absolute top-0 w-2/3 p-2 m-4 bg-green-300 border-2 border-black rounded-lg" v-if="messages.success">
-                <strong>Success!</strong> {{ messages.success }}
+            <div class="absolute top-0 w-2/3 p-2 m-4 bg-gray-200 rounded-lg" v-if="message">
+                <strong>Success!</strong> {{ message }}
             </div>
             <div class="flex flex-row w-full space-x-4">
                 <div class="flex flex-col w-2/3 p-4 bg-gray-200 rounded-lg divide-y-2 divide-black">
@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="absolute top-0 right-0 flex flex-row items-center justify-end w-full h-auto px-20 py-4 space-x-4">
-                <switch-component v-if="art" v-model="artwork.forSale"></switch-component>
+                <switch-component v-if="id" v-model="artwork.forSale"></switch-component>
                 <button type="submit" class="p-2 rounded-lg bg-adobe">Submit</button>
             </div>
         </form>
@@ -136,20 +136,19 @@
 <script>
     export default {
         props: {
-            art: {
+            id: {
                 type: Number,
                 required: false,
             },
         },
         created () {
-            this.fetchArtwork();
+            if (this.id != null) {
+                this.fetchArtwork();
+            }
         },
         data () {
             return {
-                messages: {
-                    info: null,
-                    success: null,
-                },
+                message: null,
                 errors: {
                     data: {
                         artwork: {
@@ -187,17 +186,16 @@
                 coverImage: null,
                 flyerImages: [],
                 processingRequest: false,
+                requestStatus: null,
             };
         },
         methods: {
             fetchArtwork () {
-                if (this.art) {
-                    axios
-                        .get(process.env.MIX_APP_URL + 'api/artworks/' + this.art)
-                        .then(response => {
-                            this.setArtwork(response);
-                        });
-                }
+                axios
+                    .get(process.env.MIX_APP_URL + 'api/artworks/' + this.id)
+                    .then(response => {
+                        this.setArtwork(response);
+                    });
             },
 
             addFile (arrayName) {
@@ -235,14 +233,13 @@
 
                 this.processingRequest = true;
 
-                if (this.art) {
+                if (this.id) {
                     formData.append('_method', 'PUT');
 
                     axios
-                        .post(process.env.MIX_APP_URL + 'api/artworks/' + this.art, formData, config)
+                        .post(process.env.MIX_APP_URL + 'api/artworks/' + this.id, formData, config)
                         .then(response => {
-                            this.setArtwork(response);
-                            this.setMessages(response);
+                            this.processResponse(response);
                         })
                         .catch(error => {
                             this.setErrors(error.response);
@@ -252,8 +249,7 @@
                     axios
                         .post(process.env.MIX_APP_URL + 'api/artworks', formData, config)
                         .then(response => {
-                            this.setArtwork(response);
-                            this.setMessages(response);
+                            this.processResponse(response);
                         })
                         .catch(error => {
                             this.setErrors(error.response);
@@ -262,17 +258,29 @@
                 }
             },
 
+            processResponse (response) {
+                let r = response.data;
+
+                if (r.status == 'error') {
+                    this.requestStatus = r.status;
+                    this.message = r.message ? r.message : "Unexpected error. Try later.";
+                    this.processingRequest = false;
+                } else {
+                    window.location.href = "/artwork/show/" + r.data.id;
+                }
+            },
+
             setArtwork (response) {
-                let artwork = response.data.data.artwork;
+                let artwork = response.data.data;
 
                 if (artwork !== null) {
                     this.artwork.name = artwork.name;
                     this.artwork.origin = artwork.origin;
-                    this.artwork.text1 = artwork.description;
-                    this.artwork.highlightedText = artwork.description;
-                    this.artwork.text2 = artwork.description;
-                    this.artwork.text3 = artwork.description;
-                    this.artwork.text4 = artwork.description;
+                    this.artwork.text1 = artwork.text1;
+                    this.artwork.highlightedText = artwork.highlightedText;
+                    this.artwork.text2 = artwork.text2;
+                    this.artwork.text3 = artwork.text3;
+                    this.artwork.text4 = artwork.text4;
                     this.artwork.width = artwork.width;
                     this.artwork.height = artwork.length;
                     this.artwork.depth = artwork.depth;
@@ -283,14 +291,6 @@
                     this.coverImage = artwork.coverImage;
                     this.flyerImages = artwork.flyerImages;
                 }
-            },
-
-            setMessages (response) {
-                let messages = response.data.messages;
-
-                this.processingRequest = false;
-                this.messages.success = messages.success;
-                this.messages.info = messages.info;
             },
 
             setErrors (response) {

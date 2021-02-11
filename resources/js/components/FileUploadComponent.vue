@@ -10,9 +10,7 @@
 <script>
     export default {
         props: {
-            value: {
-                type: Object
-            }
+            value: null,
         },
         created () {
             if (this.value != null) {

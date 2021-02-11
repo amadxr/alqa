@@ -4,7 +4,7 @@
 <div class="flex flex-col w-full h-screen">
     @include('_partials.navbar')
     <artwork-form-component
-        :art="{{ $artworkId }}"
+        :id ="{{ $artworkId }}"
     ></artwork-form-component>
 </div>
 @endsection

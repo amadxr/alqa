@@ -41,7 +41,7 @@
             },
 
             setArtworks (response) {
-                let artworks = response.data.data.artworks;
+                let artworks = response.data.data;
 
                 if (artworks !== null) {
                     this.artworks = artworks;
@@ -49,11 +49,11 @@
             },
 
             redirectToCreate () {
-                window.location.href = "artwork/create";
+                window.location.href = "/artwork/create";
             },
 
             redirectToUpdate (id) {
-                window.location.href = "artwork/show/" + id;
+                window.location.href = "/artwork/show/" + id;
             },
 
             deleteArtwork (id) {
