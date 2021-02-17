@@ -142,7 +142,7 @@
             },
         },
         created () {
-            if (this.id != null) {
+            if (this.id !== null) {
                 this.fetchArtwork();
             }
         },
@@ -223,13 +223,13 @@
 
                 formData.append('data', json);
 
-                this.carouselImages.forEach((file, index) =>
-                    formData.append('carouselImages[' + index + ']', file));
+                this.carouselImages.forEach((obj, index) =>
+                    formData.append('carouselImages[' + index + ']', obj.file));
 
-                this.flyerImages.forEach((file, index) =>
-                    formData.append('flyerImages[' + index + ']', file));
+                this.flyerImages.forEach((obj, index) =>
+                    formData.append('flyerImages[' + index + ']', obj.file));
 
-                formData.append('coverImage', this.coverImage);
+                formData.append('coverImage', this.coverImage.file);
 
                 this.processingRequest = true;
 
@@ -282,7 +282,7 @@
                     this.artwork.text3 = artwork.text3;
                     this.artwork.text4 = artwork.text4;
                     this.artwork.width = artwork.width;
-                    this.artwork.height = artwork.length;
+                    this.artwork.height = artwork.height;
                     this.artwork.depth = artwork.depth;
                     this.artwork.sku = artwork.sku;
                     this.artwork.price = artwork.price;

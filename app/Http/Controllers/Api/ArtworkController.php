@@ -111,25 +111,21 @@ class ArtworkController extends ApiController
         $artworkArray = [
             'name' => $artworkData['name'],
             'origin' => $artworkData['origin'],
-            'description' => $artworkData['description'],
+            'text1' => $artworkData['text1'],
+            'highlighted_text' => $artworkData['highlightedText'],
+            'text2' => $artworkData['text2'],
+            'text3' => $artworkData['text3'],
+            'text4' => $artworkData['text4'],
             'width' => $artworkData['width'],
-            'length' => $artworkData['length'],
+            'height' => $artworkData['height'],
             'depth' => $artworkData['depth'],
             'price_in_cents' => $artworkData['price'] * 100,
             'for_sale' => $artworkData['forSale'],
         ];
 
         $artwork->update($artworkArray);
-        $success = "Artwork successfully updated!";
 
-        return response()->json([
-            'data' => [
-                'artwork' => new ArtworkResource($artwork),
-            ],
-            'messages' => [
-                'success' => $success,
-            ]
-        ], 200);
+        return $this->successResponse(new ArtworkResource($artwork));
     }
 
     public function delete($id)
